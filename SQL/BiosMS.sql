@@ -94,6 +94,76 @@ CREATE TABLE `alliance` (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for `dojorecord`
+-- ----------------------------
+DROP TABLE IF EXISTS `dojorecord`;
+CREATE TABLE `dojorecord` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `characterid` int(11) NOT NULL,
+  `floor` int(11) NOT NULL DEFAULT '1',
+  `time` bigint(20) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `characterid` (`characterid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Table structure for `maker_recipe`
+-- ----------------------------
+DROP TABLE IF EXISTS `maker_recipe`;
+CREATE TABLE `maker_recipe` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `item_id` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL DEFAULT '1',
+  `level` int(11) NOT NULL DEFAULT '1',
+  `req_meso` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `item_id` (`item_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Table structure for `maker_recipe_ingredients`
+-- ----------------------------
+DROP TABLE IF EXISTS `maker_recipe_ingredients`;
+CREATE TABLE `maker_recipe_ingredients` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `recipe_id` int(11) NOT NULL,
+  `item_id` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  KEY `recipe_id` (`recipe_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Starter recipes: arrows and throwing stars (v62 Maker skill basics)
+INSERT INTO `maker_recipe` (`item_id`, `quantity`, `level`, `req_meso`) VALUES
+(2060000, 100, 1, 300),   -- Arrow for Bow x100
+(2061000, 100, 1, 300),   -- Arrow for Crossbow x100
+(2070000,  10, 1, 400),   -- Subi Throwing-Stars x10
+(2070001,  10, 2, 600),   -- Wolbi Throwing-Stars x10
+(2070002,  10, 3, 800),   -- Mokbi Throwing-Stars x10
+(2070003,  10, 4, 1000),  -- Kumbi Throwing-Stars x10
+(2330000, 100, 1, 200),   -- Bullet x100
+(2331000, 100, 2, 400);   -- Split Bullet x100
+
+-- Ingredients for arrows/stars/bullets (uses basic etc items)
+-- Arrow for Bow: 1x Firewood (4003000)
+INSERT INTO `maker_recipe_ingredients` (`recipe_id`, `item_id`, `quantity`)
+SELECT r.id, 4003000, 1 FROM maker_recipe r WHERE r.item_id = 2060000;
+-- Arrow for Crossbow: 1x Firewood
+INSERT INTO `maker_recipe_ingredients` (`recipe_id`, `item_id`, `quantity`)
+SELECT r.id, 4003000, 1 FROM maker_recipe r WHERE r.item_id = 2061000;
+-- Subi Stars: 1x Processed Wood
+INSERT INTO `maker_recipe_ingredients` (`recipe_id`, `item_id`, `quantity`)
+SELECT r.id, 4011000, 1 FROM maker_recipe r WHERE r.item_id = 2070000;
+-- Wolbi Stars: 1x Processed Wood + 1x Steel Plate
+INSERT INTO `maker_recipe_ingredients` (`recipe_id`, `item_id`, `quantity`)
+SELECT r.id, 4011000, 1 FROM maker_recipe r WHERE r.item_id = 2070001;
+INSERT INTO `maker_recipe_ingredients` (`recipe_id`, `item_id`, `quantity`)
+SELECT r.id, 4011001, 1 FROM maker_recipe r WHERE r.item_id = 2070001;
+-- Bullets: 1x Steel Plate
+INSERT INTO `maker_recipe_ingredients` (`recipe_id`, `item_id`, `quantity`)
+SELECT r.id, 4011001, 1 FROM maker_recipe r WHERE r.item_id = 2330000;
+
+-- ----------------------------
 -- Table structure for `bosslog`
 -- ----------------------------
 DROP TABLE IF EXISTS `bosslog`;
