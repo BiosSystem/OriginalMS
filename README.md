@@ -1,11 +1,11 @@
-# OriginalMS — Classic Branch
+# OriginalMS - Classic Branch
 
-Vanilla MapleStory v62 (GMS 2008-era) private server emulator — **pre-Docker edition**.
+Vanilla MapleStory v62 (GMS 2008-era) private server emulator - **pre-Docker edition**.
 
-This branch is a snapshot of the server as it existed before Docker and Maven were introduced. It runs using a local Java 8 JDK and three shell scripts. No containers, no build tool — closer to how the original OdinMS community ran servers in the 2008–2012 era.
+This branch is a snapshot of the server as it existed before Docker and Maven were introduced. It runs using a local Java 8 JDK and three shell scripts. No containers, no build tool - closer to how the original OdinMS community ran servers in the 2008–2012 era.
 
 > **Want to run the server today with minimal setup?**  
-> Switch to the [`main` branch](../../tree/main) — it uses `docker compose up --build -d` and is fully self-contained.
+> Switch to the [`main` branch](../../tree/main) - it uses `docker compose up --build -d` and is fully self-contained.
 
 ---
 
@@ -29,9 +29,9 @@ No `Dockerfile`, no `docker-compose.yml`, no `pom.xml` on this branch.
 
 ## Prerequisites
 
-- **Java 8 JDK** — `java` and `javac` and `keytool` all on `PATH`
-- **MySQL 5.7+** — running locally
-- **MapleStory v62 WZ XML files** — place in `./wz/`
+- **Java 8 JDK** - `java` and `javac` and `keytool` all on `PATH`
+- **MySQL 5.7+** - running locally
+- **MapleStory v62 WZ XML files** - place in `./wz/`
 - Linux, macOS, or Git Bash on Windows (for the `.sh` scripts)
 
 ---
@@ -66,7 +66,7 @@ net.sf.odinms.world.meso=1
 net.sf.odinms.world.drop=1
 ```
 
-**`recvops.properties` / `sendops.properties`** — copy from the [`main` branch `configs/opcodes/`](../../tree/main/configs/opcodes) — the opcode maps are identical.
+**`recvops.properties` / `sendops.properties`** - copy from the [`main` branch `configs/opcodes/`](../../tree/main/configs/opcodes) - the opcode maps are identical.
 
 ### 3. Compile the source
 
@@ -114,4 +114,4 @@ Point your v62 client at `127.0.0.1`, port `8484`.
 
 ## Note on features
 
-This branch represents the server as of **August 2022** — before CPQ2, Mu Lung Dojo, CWKPQ, Maker Skill, Steal, and Party Search were added. For the complete v62 feature set, use the [`main` branch](../../tree/main).
+This branch represents the server as of **August 2022** - before CPQ2, Mu Lung Dojo, CWKPQ, Maker Skill, Steal, and Party Search were added. For the complete v62 feature set, use the [`main` branch](../../tree/main).
