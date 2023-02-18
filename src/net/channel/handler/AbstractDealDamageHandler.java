@@ -25,9 +25,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import client.Equip;
+import client.IItem;
 import client.ISkill;
+import client.Item;
 import client.MapleBuffStat;
 import client.MapleCharacter;
+import client.MapleInventoryType;
 import client.MapleJob;
 import client.SkillFactory;
 import client.anticheat.CheatingOffense;
@@ -38,6 +42,7 @@ import net.AbstractMaplePacketHandler;
 import net.channel.pvp.MaplePvp;
 import tools.FilePrinter;
 import server.AutobanManager;
+import server.MapleItemInformationProvider;
 import server.MapleStatEffect;
 import server.TimerManager;
 import server.life.Element;
@@ -278,6 +283,28 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                     if (attackEffect.makeChanceResult()) {
                         MonsterStatusEffect monsterStatusEffect = new MonsterStatusEffect(attackEffect.getMonsterStati(), theSkill, false);
                         monster.applyStatus(player, monsterStatusEffect, attackEffect.isPoison(), attackEffect.getDuration());
+                    }
+                }
+
+                // Steal (4201004): Bandit skill that steals one item from a monster (once per monster)
+                if (attack.skill == 4201004 && totDamageToOneMonster > 0 && !monster.isStolenFrom()) {
+                    ISkill steal = SkillFactory.getSkill(4201004);
+                    if (steal != null && player.getSkillLevel(steal) > 0) {
+                        MapleStatEffect stealEffect = steal.getEffect(player.getSkillLevel(steal));
+                        if (stealEffect.makeChanceResult()) {
+                            int dropId = monster.getDrop();
+                            if (dropId > 0) {
+                                monster.setStolenFrom(true);
+                                MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
+                                IItem stolen;
+                                if (ii.getInventoryType(dropId) == MapleInventoryType.EQUIP) {
+                                    stolen = ii.randomizeStats((Equip) ii.getEquipById(dropId));
+                                } else {
+                                    stolen = new Item(dropId, (byte) 0, (short) 1);
+                                }
+                                map.spawnItemDrop(player, player, stolen, player.getPosition(), true, true);
+                            }
+                        }
                     }
                 }
 

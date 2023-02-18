@@ -92,6 +92,7 @@ public class MapleMonster extends AbstractLoadedMapleLife {
     private MapleCharacter target = null;
     private boolean hypnotized = false;
     private MapleCharacter hypnotizer = null;
+    private boolean stolen = false;
 
     public MapleMonster(int id, MapleMonsterStats stats) {
         super(id);
@@ -116,6 +117,14 @@ public class MapleMonster extends AbstractLoadedMapleLife {
 
     public boolean isHypnotized() {
         return hypnotized;
+    }
+
+    public boolean isStolenFrom() {
+        return stolen;
+    }
+
+    public void setStolenFrom(boolean stolen) {
+        this.stolen = stolen;
     }
 
     public void setHypnotized(boolean hypnotized) {
