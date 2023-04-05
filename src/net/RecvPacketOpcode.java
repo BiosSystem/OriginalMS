@@ -140,8 +140,11 @@ public enum RecvPacketOpcode implements WritableIntValueHolder {
     ALLIANCE_OPERATION,
     PET_AUTO_POT,
     HIRED_MERCHANT,
-    SILVER_BOX, //0xA3
-    HIRED_MERCHANT_REQUEST;
+    SILVER_BOX,
+    HIRED_MERCHANT_REQUEST,
+    PARTY_SEARCH_REGISTER,
+    PARTY_SEARCH_START,
+    MAKER_SKILL;
 
     private int code = -2;
 

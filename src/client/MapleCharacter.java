@@ -271,6 +271,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
     private int pvpDeaths;
     private int pvpKills;
     private boolean challenged = false;
+    private boolean partySearch = false;
+    private int partySearchCategory = 0;
     private long lastFJ = 0;
     private int lastY = 0;
     private HiredMerchant hiredMerchant = null;
@@ -5766,6 +5768,22 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
 
     public void setChallenged(boolean challenged) {
         this.challenged = challenged;
+    }
+
+    public boolean isPartySearch() {
+        return partySearch;
+    }
+
+    public void setPartySearch(boolean partySearch) {
+        this.partySearch = partySearch;
+    }
+
+    public int getPartySearchCategory() {
+        return partySearchCategory;
+    }
+
+    public void setPartySearchCategory(int category) {
+        this.partySearchCategory = category;
     }
 
     public void setPlayerVariable(String name, String value) {

@@ -188,6 +188,9 @@ public final class PacketProcessor {
             registerHandler(RecvPacketOpcode.HIRED_MERCHANT, new OpenHiredHandler());
             registerHandler(RecvPacketOpcode.HIRED_MERCHANT_REQUEST, new HiredMerchantRequest());
             registerHandler(RecvPacketOpcode.SILVER_BOX, new SilverBox());
+            registerHandler(RecvPacketOpcode.PARTY_SEARCH_REGISTER, new PartySearchHandler());
+            registerHandler(RecvPacketOpcode.PARTY_SEARCH_START, new PartySearchHandler());
+            registerHandler(RecvPacketOpcode.MAKER_SKILL, new MakerSkillHandler());
         } else {
             throw new RuntimeException("Unknown packet processor mode.");
         }
