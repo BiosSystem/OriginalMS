@@ -27,9 +27,10 @@ package server;
 public enum MapleSquadType {
     ZAKUM(0),
     HORNTAIL(1),
-    ARIANT1(2), //Ariant one
-    ARIANT2(3), //Ariant two
-    ARIANT3(4), //Ariant three
+    ARIANT1(2),
+    ARIANT2(3),
+    ARIANT3(4),
+    CWKPQ(5),
     UNKNOWN(99);
 
     final byte type;
