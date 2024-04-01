@@ -1,0 +1,107 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:5.7
+    container_name: biosms-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-change_me_in_production}
+      MYSQL_DATABASE: biosms
+    ports:
+      - "3306:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+      # Automatically initialize the database schemas and seeds on container startup
+      - ./SQL:/docker-entrypoint-initdb.d
+    networks:
+      - biosms-network
+
+  world:
+    build: .
+    container_name: biosms-world
+    restart: unless-stopped
+    depends_on:
+      - db
+    volumes:
+      - ./wz:/app/wz
+    environment:
+      - DB_URL=jdbc:mysql://db:3306/biosms
+    command: >
+      java -Xmx512m
+      -Drecvops=recvops.properties
+      -Dsendops=sendops.properties
+      -Dwzpath=wz/
+      -Dworld.worldId=0
+      -Djavax.net.ssl.keyStore=filename.keystore
+      -Djavax.net.ssl.keyStorePassword=passwd
+      -Djavax.net.ssl.trustStore=filename.keystore
+      -Djavax.net.ssl.trustStorePassword=passwd
+      -cp dist/*:lib/*
+      net.world.WorldServer
+    networks:
+      - biosms-network
+
+  login:
+    build: .
+    container_name: biosms-login
+    restart: unless-stopped
+    depends_on:
+      - db
+      - world
+    ports:
+      - "8484:8484"
+    volumes:
+      - ./wz:/app/wz
+    environment:
+      - DB_URL=jdbc:mysql://db:3306/biosms
+    command: >
+      java -Xmx512m
+      -Drecvops=recvops.properties
+      -Dsendops=sendops.properties
+      -Dwzpath=wz/
+      -Dlogin.config=configs/login.properties
+      -Djavax.net.ssl.keyStore=filename.keystore
+      -Djavax.net.ssl.keyStorePassword=passwd
+      -Djavax.net.ssl.trustStore=filename.keystore
+      -Djavax.net.ssl.trustStorePassword=passwd
+      -cp dist/*:lib/*
+      net.login.LoginServer
+    networks:
+      - biosms-network
+
+  channel1:
+    build: .
+    container_name: biosms-channel1
+    restart: unless-stopped
+    depends_on:
+      - db
+      - world
+    ports:
+      - "7575:7575"
+    volumes:
+      - ./wz:/app/wz
+    environment:
+      - DB_URL=jdbc:mysql://db:3306/biosms
+    command: >
+      java -Xmx512m
+      -Drecvops=recvops.properties
+      -Dsendops=sendops.properties
+      -Dwzpath=wz/
+      -Dchannel.worldId=0
+      -Dchannel.config=configs/channel.properties
+      -Djavax.net.ssl.keyStore=filename.keystore
+      -Djavax.net.ssl.keyStorePassword=passwd
+      -Djavax.net.ssl.trustStore=filename.keystore
+      -Djavax.net.ssl.trustStorePassword=passwd
+      -cp dist/*:lib/*
+      net.channel.ChannelServer
+    networks:
+      - biosms-network
+
+volumes:
+  db-data:
+
+networks:
+  biosms-network:
+    driver: bridge
