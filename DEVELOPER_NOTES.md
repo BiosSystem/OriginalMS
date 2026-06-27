@@ -1,4 +1,4 @@
-# OriginalMS - AI Context (CLAUDE.md)
+# OriginalMS - Developer Notes
 
 MapleStory v62 (GMS 2008-era) private server emulator. OdinMS lineage, translated from Brazilian Portuguese to English, Dockerized.
 
@@ -88,7 +88,6 @@ Event scripts are JS files in `scripts/event/`. The Java side exposes:
 - No `feat:` / `fix:` / `chore:` prefixes - plain imperative (`Add X`, `Fix Y in Z`)
 - No AI signatures, no "Co-Authored-By" trailers
 - Spread dates: use GIT_AUTHOR_DATE/GIT_COMMITTER_DATE env vars to simulate realistic history (2–10 week gaps, +03:00 TZ)
-- Spreading tool: `D:\Antigravity_Projects\spread_commits_human.py`
 - No push without user approval
 
 ## Known open questions
