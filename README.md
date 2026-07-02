@@ -16,12 +16,12 @@
 </p>
 
 <p align="center">
-  <strong>ðŸŒ Part of the <a href="https://bios-system.net">BiosSystem Suite</a></strong>
+  <strong>🌐 Part of the <a href="https://bios-system.net">BiosSystem Suite</a></strong>
 </p>
 
 **OriginalMS** is a modern, Dockerized classic MapleStory v62 (GMS 2008) server emulator. It ships with all Party Quests working, Cygnus Knights, Aran, bosses, and a fully localized English UI. Zero local environment setup required.
 
-## ðŸ—ï¸ Architecture
+## 🏗️ Architecture
 
 ```mermaid
 graph TB
@@ -52,7 +52,7 @@ graph TB
     WZ --> EXE
 ```
 
-## ðŸŒ¿ Branch Structure
+## 🌿 Branch Structure
 
 This project uses a strict 3-branch architecture:
 
@@ -81,7 +81,7 @@ gitGraph
 | **`classic`** | `v1.1.0-classic` | All PQ fixes, game patches, and English localization applied. |
 | **`OdinMS`** | `v1.0.0-base` | Raw upstream source, unmodified. |
 
-## âœ… What's Fixed in `classic` and `main`
+## ✅ What's Fixed in `classic` and `main`
 
 - All Party Quests (Kerning PQ, Ludibrium PQ, Orbis PQ, etc.) work end-to-end
 - Cygnus Knights and Aran class progression fully functional
@@ -89,7 +89,7 @@ gitGraph
 - NPC dialogue fully translated to English
 - Exploits and dupe bugs from the base OdinMS patched
 
-## ðŸ› ï¸ Technologies
+## 🛠️ Technologies
 
 | Layer | Technology |
 |---|---|
@@ -99,7 +99,7 @@ gitGraph
 | **Containerization** | Docker, Docker Compose |
 | **Build** | Maven |
 
-## âš ï¸ Required Files (Not Included)
+## ⚠️ Required Files (Not Included)
 
 To comply with licensing rules, three items must be sourced separately:
 
@@ -109,7 +109,7 @@ To comply with licensing rules, three items must be sourced separately:
 | **Compiled JAR** | Build from source with Maven | Generated at `target/` |
 | **Game Client** | A v62 MapleStory client patched for `localhost` | On the player's machine |
 
-## ðŸš€ Quick Start
+## 🚀 Quick Start
 
 **Step 1.** Clone the `main` branch (Docker deployment):
 ```bash
@@ -144,7 +144,7 @@ Point your v62 `localhost.exe` at `127.0.0.1:8484` and log in with the default a
 docker compose logs -f originalms
 ```
 
-## ðŸ§© Classic Branch Setup (No Docker)
+## 🧩 Classic Branch Setup (No Docker)
 
 If you prefer to run without Docker, use the `classic` branch and set up MySQL manually:
 
@@ -163,7 +163,7 @@ mvn clean package -DskipTests
 java -jar target/OriginalMS.jar
 ```
 
-## ðŸ“– Documentation
+## 📖 Documentation
 
 Full setup guides and GM commands are in the **[Wiki](https://github.com/BiosSystem/OriginalMS/wiki)**.
 
