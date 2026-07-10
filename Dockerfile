@@ -1,5 +1,5 @@
 # Stage 1: Build Java source using Maven
-FROM maven:3.8.5-openjdk-8 AS build
+FROM maven:3.8-eclipse-temurin-8 AS build
 WORKDIR /app
 
 # Copy pom.xml and resolve dependencies
@@ -11,7 +11,7 @@ COPY src ./src
 RUN mvn clean package -DskipTests
 
 # Stage 2: Create lightweight running image
-FROM openjdk:8-jre-slim
+FROM eclipse-temurin:8-jre
 WORKDIR /app
 
 # Install gettext for envsubst if needed (useful for dynamic properties configuration)
