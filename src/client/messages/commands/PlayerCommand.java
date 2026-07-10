@@ -151,7 +151,7 @@ public class PlayerCommand implements Command {
             player.saveToDB(true, false);
             player.yellowMessage(".::You currently have::.");
             player.dropMessage("BetaPoints: " + player.getCSPoints(5)); //remove later
-            player.dropMessage("LeaderPoints: " + player.getLeaderPoints());
+            // player.dropMessage("LeaderPoints: " + player.getLeaderPoints());
             player.dropMessage("Q.Points: " + player.getpqPoints());
             player.dropMessage("JQ Points: " + player.getJQPoints());
             player.dropMessage("CashPoints: " + player.getCashPoints());
