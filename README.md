@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Share+Tech+Mono&weight=bold&size=34&duration=3000&pause=1000&color=00FF72&center=true&vCenter=true&width=600&lines=OriginalMS;MapleStory+v62+Emulator;Dockerized+for+2026;BiosSystem+Kernel" alt="OriginalMS Title" />
+  <img src="https://readme-typing-svg.herokuapp.com?font=Share+Tech+Mono&weight=bold&size=34&duration=3000&pause=1000&color=00FF72&center=true&vCenter=true&width=600&lines=OriginalMS;MapleStory+v62+Emulator;Dockerized+for+2026;BiosSystem+Kernel" alt="OriginalMS Title" />
 </div>
 
 <p align="center">
