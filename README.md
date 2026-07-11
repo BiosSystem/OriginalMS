@@ -62,6 +62,7 @@ graph TB
 This project uses a strict 3-branch architecture:
 
 ```mermaid
+%%{init: { 'logLevel': 'debug', 'theme': 'base', 'gitGraph': {'mainBranchName': 'OdinMS'}} }%%
 gitGraph
    commit id: "OdinMS base source"
    commit id: "v1.0.0-base: raw upstream"
