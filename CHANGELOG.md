@@ -1,3 +1,8 @@
+## [Unreleased]
+
+### Changed
+* **Git History:** Rewrote git history (via git filter-branch) across all commits to strip invalid AI signatures and conventional commit prefixes, complying with global BiosSystem repository rules.
+
 # Changelog
 
 All notable changes to BiosMS are documented in this file.
