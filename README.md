@@ -69,21 +69,21 @@ gitGraph
 
    branch classic
    checkout classic
-   commit id: "v1.1.0-classic: PQ fixes + game patches"
+   commit id: "v1.1.0-classic: PQ fixes"
    commit id: "English localization"
-   commit id: "Exploit fixes"
+   commit id: "v3.0.0-v62: Cygnus Aran & Bosses"
 
    branch main
    checkout main
-   commit id: "v2.0.0-docker: Dockerized deployment"
-   commit id: "Docker Compose + health checks"
+   commit id: "v2.0.0-docker: Dockerized stack"
+   commit id: "v3.0.0-v62: Parity Release"
 ```
 
 | Branch | Version | Purpose |
 |:---|:---|:---|
-| **`main`** | `v3.0.0-v62` | Production-ready Docker deployment. Start here. |
+| **`main`** | `v3.0.0-v62` | Production-ready Docker deployment stack. Start here. |
 | **`classic`** | `v3.0.0-v62` | All PQ fixes, boss phase gates, Cygnus/Aran jobs, and English localization applied. |
-| **`OdinMS`** | `v1.0.0-base` | Raw upstream source, unmodified. |
+| **`OdinMS`** | `v1.0.0-base` | Raw upstream source, unmodified base. |
 
 ## ✅ What's Fixed in `classic` and `main`
 
