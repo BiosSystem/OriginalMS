@@ -1,16 +1,14 @@
-load('nashorn:mozilla_compat.js');
+﻿load('nashorn:mozilla_compat.js');
 /*
- * LeaderMS Revision
- * @autor Gabriel A. <javascriptz@leaderms.com.br>
- * Deposito - 1052017
-*/
+ * OriginalMS - Storage Keeper (NPC 2090000)
+ */
 var status;
- 
+
 function start() {
     status = -1;
     action(1, 0, 0);
 }
- 
+
 function action(mode, type, selection) {
     if (mode == 1)
         status++;
@@ -19,7 +17,7 @@ function action(mode, type, selection) {
         return;
     }
     if (status == 0) {
-            cm.getPlayer().getStorage().sendStorage(cm.getC(), 2090000);
-            cm.dispose();
+        cm.getPlayer().getStorage().sendStorage(cm.getC(), 2090000);
+        cm.dispose();
     }
 }
