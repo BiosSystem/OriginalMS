@@ -1,4 +1,4 @@
-load('nashorn:mozilla_compat.js');
+﻿load('nashorn:mozilla_compat.js');
 /* 
  * This file is part of the OdinMS Maple Story Server
     Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc> 
@@ -42,7 +42,7 @@ function setup(eim) {
 	exitMap = em.getChannelServer().getMapFactory().getMap(211042300);
 	if (exitMap == null) 
 		debug(eim,"The exit map was not properly linked.");
-	eim.setProperty("canEnter","true");
+	eim.setProperty("canEnter","true"); eim.setProperty("armsKilled","0");
 	// not currently used; could display total duration taken to kill?
         eim.setProperty("entryTimestamp",System.currentTimeMillis());
 }
