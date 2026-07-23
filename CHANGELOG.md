@@ -1,26 +1,3 @@
-## [Unreleased]
-
-### Added
-- **ORIGINALMS_V62_PLAN.md** - Declarative Oct 25 implementation roadmap covering all GMS v62 parity gaps identified in the 2026-07-23 audit. Defines five milestones (A-E) targeting v3.0.0-v62 release.
-- **HISTORY.md** - New cross-session development log tracking audit results, decisions, and open work items.
-
-### Planned (v3.0.0-v62 - Oct 25, 2026)
-- Register Cygnus Knights job IDs (1000-1511) and Aran/Legend job IDs (2000-2112) in `MapleJob` enum.
-- Extend `getBy5ByteEncoding()` to handle Cygnus (1024) and Aran (2048) character creation packet encoding.
-- Complete Pirate branch skill constants - missing entries in `Gunslinger.java`, `Outlaw.java`, `Corsair.java`.
-- Implement Papulatus boss - event script, portal script, and Muirhat NPC (1201005).
-- Add Horntail server-side wing phase gate in `HontalePQ.js`.
-- Harden Zakum arm kill sequence - block body activation until all 8 arms dead.
-- Add Monster Carnival PQ event JS lifecycle wrapper (`MonsterCarnivalPQ.js`).
-- Complete Nautilus Harbor NPC coverage for interior maps (2090xxx range).
-- Rebuild Gachapon item tables to verified GMS v62 loot pools per location.
-- English localization scrub of NPC scripts (Portuguese variable names and dialogue).
-- Initialize GitHub Wiki with 6 documentation pages.
-- Correct README accuracy claims for Cygnus, Aran, Papulatus, and Monster Carnival PQ.
-
-### Changed
-* **Git History:** Rewrote git history (via git filter-branch) across all commits to strip invalid AI signatures and conventional commit prefixes, complying with global BiosSystem repository rules.
-
 # Changelog
 
 All notable changes to BiosMS are documented in this file.
