@@ -87,11 +87,12 @@ gitGraph
 
 ## ✅ What's Fixed in `classic` and `main`
 
-- All Party Quests (Kerning PQ, Ludibrium PQ, Orbis PQ, etc.) work end-to-end
-- Cygnus Knights and Aran class progression fully functional
-- Boss spawn timers and HP/drops corrected
-- NPC dialogue fully translated to English
-- Exploits and dupe bugs from the base OdinMS patched
+- All Party Quests (Kerning PQ, Ludibrium PQ, Orbis PQ, Monster Carnival PQ, Amoria PQ, Pirate PQ) work end-to-end
+- Cygnus Knights (Noblesse, Dawn Warrior, Blaze Wizard, Wind Archer, Night Walker, Thunder Breaker) and Aran class job enum registration and 5-byte packet decoding
+- Complete boss suites for Zakum, Horntail, and Papulatus with server-side phase enforcement
+- Authentic GMS v62 Gachapon tables rebuilt across all 12 game locations
+- Complete Nautilus Harbor NPC coverage and English localization scrub across NPC scripts
+- Exploits and dupe bugs from base OdinMS patched
 
 ## 🛠️ Technologies
 
@@ -169,7 +170,7 @@ java -jar target/OriginalMS.jar
 
 ## 📖 Documentation
 
-Full setup guides and GM commands are in the **[Wiki](https://github.com/BiosSystem/OriginalMS/wiki)**.
+Full setup guides, GM commands, and boss guides are in the **[Wiki](docs/wiki/Home.md)**.
 
 <div align="center">
   <i>Maintained by the BiosSystem team.</i>

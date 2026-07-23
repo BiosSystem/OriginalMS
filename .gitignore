@@ -7,5 +7,3 @@ dist
 *.keystore
 *.truststore
 
-# Local session tracking (not for remote)
-Claude_Brain/

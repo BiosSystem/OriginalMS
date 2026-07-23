@@ -63,6 +63,27 @@ public enum MapleJob {
     GUNSLINGER(520),
     OUTLAW(521),
     CORSAIR(522),
+    NOBLESSE(1000),
+    DAWN_WARRIOR(1100),
+    DAWN_WARRIOR_2(1110),
+    DAWN_WARRIOR_3(1111),
+    BLAZE_WIZARD(1200),
+    BLAZE_WIZARD_2(1210),
+    BLAZE_WIZARD_3(1211),
+    WIND_ARCHER(1300),
+    WIND_ARCHER_2(1310),
+    WIND_ARCHER_3(1311),
+    NIGHT_WALKER(1400),
+    NIGHT_WALKER_2(1410),
+    NIGHT_WALKER_3(1411),
+    THUNDER_BREAKER(1500),
+    THUNDER_BREAKER_2(1510),
+    THUNDER_BREAKER_3(1511),
+    LEGEND(2000),
+    ARAN_1(2100),
+    ARAN_2(2110),
+    ARAN_3(2111),
+    ARAN_4(2112),
     GM(900),
     SUPERGM(910);
 
@@ -95,8 +116,12 @@ public enum MapleJob {
                 return BOWMAN;
             case 16:
                 return THIEF;
-            case 32: // ??
+            case 32:
                 return PIRATE;
+            case 1024:
+                return NOBLESSE;
+            case 2048:
+                return LEGEND;
             default:
                 return BEGINNER;
         }
@@ -104,5 +129,13 @@ public enum MapleJob {
 
     public boolean isA(MapleJob basejob) {
         return getId() >= basejob.getId() && getId() / 100 == basejob.getId() / 100;
+    }
+
+    public boolean isCygnus() {
+        return jobid >= 1000 && jobid <= 1511;
+    }
+
+    public boolean isAran() {
+        return jobid >= 2000 && jobid <= 2112;
     }
 }
