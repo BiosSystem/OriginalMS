@@ -7,3 +7,9 @@ dist
 *.keystore
 *.truststore
 
+# Local AI session tracking & plan files (not for public repo)
+Claude_Brain/
+ORIGINALMS_V62_PLAN.md
+HISTORY.md
+_cb.py
+_msg_rewrite.py
