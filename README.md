@@ -81,8 +81,8 @@ gitGraph
 
 | Branch | Version | Purpose |
 |:---|:---|:---|
-| **`main`** | `v2.0.0-docker` | Production-ready Docker deployment. Start here. |
-| **`classic`** | `v1.1.0-classic` | All PQ fixes, game patches, and English localization applied. |
+| **`main`** | `v3.0.0-v62` | Production-ready Docker deployment. Start here. |
+| **`classic`** | `v3.0.0-v62` | All PQ fixes, boss phase gates, Cygnus/Aran jobs, and English localization applied. |
 | **`OdinMS`** | `v1.0.0-base` | Raw upstream source, unmodified. |
 
 ## ✅ What's Fixed in `classic` and `main`
@@ -168,9 +168,14 @@ mvn clean package -DskipTests
 java -jar target/OriginalMS.jar
 ```
 
-## 📖 Documentation
+## 📖 Documentation & Guides
 
-Full setup guides, GM commands, and boss guides are in the **[Wiki](docs/wiki/Home.md)**.
+- 🚀 **[Quick Start Guide](docs/wiki/Quick-Start-Guide.md)** - Step-by-step installation and client connection
+- 🎮 **[GM Commands Reference](docs/wiki/GM-Commands.md)** - Full reference for player and GM commands
+- 🐉 **[Boss Guides](docs/wiki/Boss-Guides.md)** - Zakum, Horntail, and Papulatus mechanics and entry requirements
+- 🧩 **[Party Quest Guide](docs/wiki/Party-Quest-Guide.md)** - Level ranges, entry NPCs, and rewards for all active PQs
+- 🛠️ **[Troubleshooting Guide](docs/wiki/Troubleshooting.md)** - Common setup issues, network fixes, and DB notes
+- 🏠 **[Wiki Index](docs/wiki/Home.md)** - Complete documentation sitemap
 
 <div align="center">
   <i>Maintained by the BiosSystem team.</i>
