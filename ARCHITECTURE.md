@@ -3,10 +3,10 @@
 This document strictly logs the architectural rules and structural branch guidelines for the OriginalMS project. Future developers and AI assistants must strictly adhere to these rules.
 
 ## 1. Branch Structure
-OriginalMS is uniquely segmented across multiple architectural branches rather than containing all versions in `master`.
-- `main`: The core aggregation branch.
-- `classic`: The v83 pre-BigBang emulator structure.
-- `OdinMS`: The original v62 emulator structure.
+OriginalMS is uniquely segmented across three foundational architectural branches:
+- `main`: The production-ready Dockerized deployment stack (`v3.0.0-v62`).
+- `classic`: The classic GMS v62 emulator structure with all PQ fixes, boss phase gates, Cygnus/Aran jobs, Gachapon rebuild, and English localization.
+- `OdinMS`: The raw unmodified v62 base upstream source (`v1.0.0-base`).
 
 **CRITICAL RULE: Never Delete Structural Branches.**
 When executing pull requests or merging between these branches, **do not use the `--delete-branch` (`-d`) flag**. The repository relies on these branches existing permanently as they each compile into independent architectures and assets (`OriginalMS-Windows.zip`, etc.).
