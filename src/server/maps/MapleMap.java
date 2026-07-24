@@ -1789,6 +1789,8 @@ public class MapleMap {
 //        }
 //    }
     private void fakeBossDrops(final MapleCharacter dropOwner, final MapleMonster monster) {
+        final java.util.List<Runnable> dropTasks = new java.util.ArrayList<>();
+
         //double rand;
         ChannelServer cserv = dropOwner.getClient().getChannelServer();
         int randd;
@@ -1878,11 +1880,11 @@ public class MapleMap {
                 if (meso > 0) {
                     final MapleMonster dropMonster = monster;
                     final MapleCharacter dropChar = dropOwner;
-                    TimerManager.getInstance().schedule(new Runnable() {
-                        public void run() {
+                    dropTasks.add(new Runnable() {
+public void run() {
                             spawnMesoDrop(meso * mesoRate, meso, dropPos, dropMonster, dropChar, true);
                         }
-                    }, monster.getAnimationTime("die1"));
+});
                 } else {
                     IItem idrop;
                     MapleInventoryType type = ii.getInventoryType(drop);
@@ -1913,7 +1915,7 @@ public class MapleMap {
                     final TimerManager tMan = TimerManager.getInstance();
                     final MapleClient c;
 
-                    tMan.schedule(new Runnable() {
+                    dropTasks.add(new Runnable() {
                         public void run() {
                             spawnAndAddRangedMapObject(mdrop, new DelayedPacketCreation() {
                                 public void sendPackets(MapleClient c) {
@@ -1924,14 +1926,26 @@ public class MapleMap {
 
                             tMan.schedule(new ExpireMapItemJob(mdrop), 60000);
                         }
-                    }, monster.getAnimationTime("die1"));
+                    });
 
                 }
             }
         }
+    
+        if (!dropTasks.isEmpty()) {
+            TimerManager.getInstance().schedule(new Runnable() {
+                public void run() {
+                    for (Runnable task : dropTasks) {
+                        task.run();
+                    }
+                }
+            }, monster.getAnimationTime("die1"));
+        }
     }
 
     private void bossHunterDrops(final MapleMonster monster, final MapleCharacter dropOwner) {
+        final java.util.List<Runnable> dropTasks = new java.util.ArrayList<>();
+
         //double rand;
         ChannelServer cserv = dropOwner.getClient().getChannelServer();
         int randd;
@@ -2013,11 +2027,11 @@ public class MapleMap {
                     if (meso > 0) {
                         final MapleMonster dropMonster = monster;
                         final MapleCharacter dropChar = dropOwner;
-                        TimerManager.getInstance().schedule(new Runnable() {
-                            public void run() {
+                        dropTasks.add(new Runnable() {
+public void run() {
                                 spawnMesoDrop(meso * mesoRate, meso, dropPos, dropMonster, dropChar, true);
                             }
-                        }, monster.getAnimationTime("die1"));
+});
                     } else {
                         IItem idrop;
                         MapleInventoryType type = ii.getInventoryType(drop);
@@ -2048,7 +2062,7 @@ public class MapleMap {
                         final TimerManager tMan = TimerManager.getInstance();
                         final MapleClient c;
 
-                        tMan.schedule(new Runnable() {
+                        dropTasks.add(new Runnable() {
                             public void run() {
                                 spawnAndAddRangedMapObject(mdrop, new DelayedPacketCreation() {
                                     public void sendPackets(MapleClient c) {
@@ -2059,7 +2073,7 @@ public class MapleMap {
 
                                 tMan.schedule(new ExpireMapItemJob(mdrop), 60000);
                             }
-                        }, monster.getAnimationTime("die1"));
+                        });
                         //activateItemReactors(mdrop); -- No we dont need to activate reactors... =.="
 
                     }
@@ -2067,6 +2081,16 @@ public class MapleMap {
             }
         } catch (IndexOutOfBoundsException e) {
             return;
+        }
+    
+        if (!dropTasks.isEmpty()) {
+            TimerManager.getInstance().schedule(new Runnable() {
+                public void run() {
+                    for (Runnable task : dropTasks) {
+                        task.run();
+                    }
+                }
+            }, monster.getAnimationTime("die1"));
         }
     }
 
