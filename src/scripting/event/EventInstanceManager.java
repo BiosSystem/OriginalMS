@@ -75,6 +75,15 @@ public class EventInstanceManager {
     private final ReentrantReadWriteLock mutex = new ReentrantReadWriteLock();
     private final Lock rL = mutex.readLock(), wL = mutex.writeLock();
     private Map<Integer, MapleMap> instanceMaps = new HashMap<Integer, MapleMap>();
+    private server.MonsterCarnival monsterCarnival;
+
+    public server.MonsterCarnival getMonsterCarnival() {
+        return monsterCarnival;
+    }
+
+    public void setMonsterCarnival(server.MonsterCarnival monsterCarnival) {
+        this.monsterCarnival = monsterCarnival;
+    }
 
     public EventInstanceManager(EventManager em, String name) {
         this.em = em;

@@ -25,15 +25,16 @@ public class MonsterCarnival {
 
     private MapleParty p1, p2;
     private MapleMap map;
-    private ScheduledFuture<?> timer;
-    private ScheduledFuture<?> effectTimer;
     private long startTime;
     private MapleCharacter leader1, leader2;
     private int redCP, blueCP, redTotalCP, blueTotalCP;
 
-    public MonsterCarnival(MapleParty p1, MapleParty p2, int mapid) {
+    private scripting.event.EventInstanceManager eim;
+
+    public MonsterCarnival(MapleParty p1, MapleParty p2, int mapid, scripting.event.EventInstanceManager eim) {
         this.p1 = p1;
         this.p2 = p2;
+        this.eim = eim;
         int chnl = p1.getLeader().getChannel();
         int chnl1 = p2.getLeader().getChannel();
         if (chnl != chnl1) {
@@ -75,16 +76,7 @@ public class MonsterCarnival {
             }
         }
         startTime = System.currentTimeMillis() + 60 * 10000;
-        timer = TimerManager.getInstance().schedule(new Runnable() {
-            public void run() {
-                timeUp();
-            }
-        }, 10 * 60 * 1000);
-        effectTimer = TimerManager.getInstance().schedule(new Runnable() {
-            public void run() {
-                complete();
-            }
-        }, 10 * 60 * 1000 - 10 * 1000);
+        // Timers moved to JavaScript EventManager (MonsterCarnivalPQ.js)
         TimerManager.getInstance().schedule(new Runnable() {
             public void run() {
                 map.addClock(60 * 10);
@@ -177,8 +169,7 @@ public class MonsterCarnival {
                 }
             }
         }
-        timer.cancel(false);
-        effectTimer.cancel(false);
+        // Timers canceled by JavaScript EventManager
         redTotalCP = 0;
         blueTotalCP = 0;
         leader1.getParty().setEnemy(null);
@@ -187,10 +178,6 @@ public class MonsterCarnival {
 
     public void exit() {
         dispose();
-    }
-
-    public ScheduledFuture<?> getTimer() {
-        return this.timer;
     }
 
     public void finish(int winningTeam) {
@@ -266,16 +253,11 @@ public class MonsterCarnival {
         map.broadcastMessage(MaplePacketCreator.serverNotice(5, "The time has been extended."));
         startTime = System.currentTimeMillis() + 3 * 1000;
         map.addClock(3 * 60);
-        timer = TimerManager.getInstance().schedule(new Runnable() {
-            public void run() {
-                timeUp();
-            }
-        }, 3 * 60 * 1000);
-        effectTimer = TimerManager.getInstance().schedule(new Runnable() {
-            public void run() {
-                complete();
-            }
-        }, 3 * 60 * 1000 - 10);
+        if (eim != null) {
+            eim.startEventTimer(3 * 60 * 1000);
+            eim.schedule("timeOut", 3 * 60 * 1000);
+            eim.schedule("complete", 3 * 60 * 1000 - 10000);
+        }
     }
 
     public void complete() {

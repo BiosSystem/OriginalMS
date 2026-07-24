@@ -90,21 +90,25 @@ function action(mode, type, selection) {
                 case 1:
                     cm.warp(980000000, 0);
                     cm.gainExp(30000);
+                    cm.gainItem(4001129, 5);
                     cm.dispose();
                     break;
                 case 2:
                     cm.warp(980000000, 0);
                     cm.gainExp(25500);
+                    cm.gainItem(4001129, 4);
                     cm.dispose();
                     break;
                 case 3:
                     cm.warp(980000000, 0);
                     cm.gainExp(21000);
+                    cm.gainItem(4001129, 3);
                     cm.dispose();
                     break;
                 case 4:
                     cm.warp(980000000, 0);
                     cm.gainExp(19550);
+                    cm.gainItem(4001129, 2);
                     cm.dispose();
                     break;
             }
@@ -147,23 +151,27 @@ function action(mode, type, selection) {
             case 10:
                 cm.warp(980000000, 0);
                 cm.gainExp(10000);
-                    cm.dispose();
-                    break;
-                case 20:
-                    cm.warp(980000000, 0);
-                    cm.gainExp(8500);
-                    cm.dispose();
-                    break;
-                case 30:
-                    cm.warp(980000000, 0);
-                    cm.gainExp(7000);
-                    cm.dispose();
-                    break;
-                case 40:
-                    cm.warp(980000000, 0);
-                    cm.gainExp(4550);
-                    cm.dispose();
-                    break;
+                cm.gainItem(4001129, 4);
+                cm.dispose();
+                break;
+            case 20:
+                cm.warp(980000000, 0);
+                cm.gainExp(8500);
+                cm.gainItem(4001129, 3);
+                cm.dispose();
+                break;
+            case 30:
+                cm.warp(980000000, 0);
+                cm.gainExp(7000);
+                cm.gainItem(4001129, 2);
+                cm.dispose();
+                break;
+            case 40:
+                cm.warp(980000000, 0);
+                cm.gainExp(4550);
+                cm.gainItem(4001129, 1);
+                cm.dispose();
+                break;
             }
         }
       }

@@ -13,134 +13,68 @@ function start() {
 }
 
 function action(mode, type, selection) {
-	if (mode == -1) {
-		cm.dispose();
-	} else {
-		if (mode == 0 && status == 0) {
-			cm.dispose();
-			return;
-		}
-		if (mode == 1)
-			status++;
-		else
-			status--;
-		if (status == 0) {
-    if (cm.getParty() == null) {
-        cm.sendOk("#eCreate a party!#k");
+    if (mode == -1) {
         cm.dispose();
-    } else if (!cm.isLeader()) {
-        cm.sendOk("If you want to try Carnival PQ, please tell the #bleader of your party#k to talk to me.");
-        cm.dispose();
-    }else{
-        var party = cm.getParty().getMembers();
-        var inMap = cm.partyMembersInMap();
-        var lvlOk = 0;
-		var isInMap = 0;
-        for (var i = 0; i < party.size(); i++) {
-			if (party.get(i).getLevel() >= minLvl && party.get(i).getLevel() <= maxLvl) {
-				lvlOk++;
-			}
-			if (party.get(i).getMapid() != 980000000) {
-				//isInMap = false;
-				isInMap++
-			}
+    } else {
+        if (mode == 0 && status == 0) {
+            cm.dispose();
+            return;
         }
-	
-        if (party >= 1) {
-            cm.sendOk("You don't have enough people in your party. You need a party of #b"+minAmt+"#k - #r"+maxAmt+"#k members and they must be in the map with you. There are #b"+inMap+"#k members here.");
-            cm.dispose();
-        } else if (lvlOk != inMap) {
-            cm.sendOk("Make sure everyone in your party is here and is in the right level range of 30-50!");
-            cm.dispose();
-		} else if (isInMap > 0) {
-			cm.sendOk("All members are not in the map!");
-			cm.dispose();
-        }else{
-            cm.sendCPQMapLists();	
+        if (mode == 1)
+            status++;
+        else
+            status--;
+        
+        if (status == 0) {
+            if (cm.getParty() == null) {
+                cm.sendOk("#eCreate a party!#k");
+                cm.dispose();
+            } else if (!cm.isLeader()) {
+                cm.sendOk("If you want to try Carnival PQ, please tell the #bleader of your party#k to talk to me.");
+                cm.dispose();
+            } else {
+                var party = cm.getParty().getMembers();
+                var inMap = cm.partyMembersInMap();
+                var lvlOk = 0;
+                var isInMap = 0;
+                for (var i = 0; i < party.size(); i++) {
+                    if (party.get(i).getLevel() >= minLvl && party.get(i).getLevel() <= maxLvl) {
+                        lvlOk++;
+                    }
+                    if (party.get(i).getMapid() != 980000000) {
+                        isInMap++;
+                    }
+                }
+            
+                if (party.size() < minAmt || party.size() > maxAmt) {
+                    cm.sendOk("You don't have enough people in your party. You need a party of #b"+minAmt+"#k - #r"+maxAmt+"#k members and they must be in the map with you. There are #b"+inMap+"#k members here.");
+                    cm.dispose();
+                } else if (lvlOk != inMap) {
+                    cm.sendOk("Make sure everyone in your party is here and is in the right level range of 30-50!");
+                    cm.dispose();
+                } else if (isInMap > 0) {
+                    cm.sendOk("All members are not in the map!");
+                    cm.dispose();
+                } else {
+                    cm.sendCPQMapLists();    
+                }
+            }
+        } else if (status == 1) {
+            if (cm.fieldTaken(selection)) {
+                if (cm.fieldLobbied(selection)) {
+                    cm.challengeParty(selection);
+                    cm.dispose();
+                } else {
+                    cm.sendOk("The room is taken.");
+                    cm.dispose();
+                }
+            } else {
+                cm.cpqLobby(selection);
+                cm.dispose();
+            }
         }
     }
-} else if (status == 1) {
-		if (cm.fieldTaken(selection)) {
-				if (cm.fieldLobbied(selection)) {
-					cm.challengeParty(selection);
-					cm.dispose();
-				} else {
-					cm.sendOk("The room is taken.");
-					cm.dispose();
-					}
-				} else {
-				cm.cpqLobby(selection);
-				cm.dispose();
-				}
-	}
 }
-}
-//
-////var status = 0;
-//
-//function start()
-//{
-//    status = -1;
-//    action(1, 0, 0);
-//}
-//
-//function action(mode, type, selection) {
-//    if (mode == -1) {
-//        cm.dispose();
-//    } else {
-//        if ((mode == 0 && status == 1) || (mode == 0 && status == 4)) {
-//            cm.sendOk("Come back once you have thought about it some more.");
-//            cm.dispose();
-//            return;
-//        }
-//    }
-//    if (mode == -1)
-//    {
-//        cm.dispose();
-//    }
-//    else
-//    {
-//        if (mode == 1)
-//        {
-//            status++;
-//        }
-//        else
-//        {
-//            status--;
-//        }
-//        if (status == 0) {
-//            if (cm.getParty() == null) { // no party
-//		  cm.sendOk("Voce precisa estar em algum grupo.");
-//		 cm.dispose();
-//	         return;
-//	} if (!cm.isLeader()) { // not party leader
-//		cm.sendOk("Voce nao e o lider do grupo.");
-//		cm.dispose();
-//                return;
-//        } if (checkLevelsAndMap(30, 255) == 2) { // not party leader  
-//	        cm.sendOk("Esta faltando alguem do grupo no mapa!");
-//                cm.dispose();
-//                return;
-//                } else {
-//                cm.sendCPQMapLists();
-//            }
-//
-//        } else if (status == 1) {
-//            if (cm.fieldTaken(selection)) {
-//                if (cm.fieldLobbied(selection)) {
-//                    cm.challengeParty(selection);
-//                    cm.dispose();
-//                } else {
-//                    cm.sendOk("A sala ja esta ocupada.");
-//                    cm.dispose();
-//                }
-//            } else {
-//                cm.cpqLobby(selection);
-//                cm.dispose();
-//            }
-//        }
-//    }
-//}
 //
 //function checkLevelsAndMap(lowestlevel, highestlevel) {
 //    var party = cm.getParty().getMembers();

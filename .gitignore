@@ -1,0 +1,22 @@
+# Java and IDEs
+*.class
+*.jar
+*.war
+*.ear
+*.log
+target/
+.idea/
+*.iml
+.vscode/
+bin/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# AI and Planning Files (Local Only)
+Claude_Brain/
+ORIGINALMS_GAP_ANALYSIS.md
+ORIGINALMS_V62_PLAN.md
+_cb.py
+_msg_rewrite.py

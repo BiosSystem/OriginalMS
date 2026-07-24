@@ -180,6 +180,23 @@ public class EventManager {
         }
     }
 
+    //CPQ method: starts a PQ with 2 parties
+    public EventInstanceManager startInstance(MapleParty party1, MapleParty party2, MapleMap map) {
+        try {
+            EventInstanceManager eim = (EventInstanceManager) (iv.invokeFunction("setup", (Object) null));
+            eim.setProperty("party1", String.valueOf(party1.getId()));
+            eim.setProperty("party2", String.valueOf(party2.getId()));
+            eim.registerParty(party1, map);
+            eim.registerParty(party2, map);
+            return eim;
+        } catch (ScriptException ex) {
+            Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NoSuchMethodException ex) {
+            Logger.getLogger(EventManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
     //non-PQ method for starting instance
     public void startInstance(EventInstanceManager eim, String leader) {
         try {
