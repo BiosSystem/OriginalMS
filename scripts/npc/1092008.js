@@ -1,9 +1,31 @@
-﻿load('nashorn:mozilla_compat.js');
 /*
- * OriginalMS - Nautilus NPC 1092008
+ * Bael - 1092008
+ * OriginalMS v62 Scripting Project
  */
+var status = 0;
 
 function start() {
-    cm.sendOk("Need supplies for your journey? Quartermaster Roberta at your service. Make sure you are well-equipped before setting sail.");
-    cm.dispose();
+    status = -1;
+    action(1, 0, 0);
+}
+
+function action(mode, type, selection) {
+    if (mode == -1) {
+        cm.dispose();
+    } else {
+        if (mode == 0 && status == 0) {
+            cm.dispose();
+            return;
+        }
+        if (mode == 1)
+            status++;
+        else
+            status--;
+            
+        if (status == 0) {
+            cm.sendNext("The ocean is vast and full of mysteries.");
+        } else if (status == 1) {
+            cm.dispose();
+        }
+    }
 }

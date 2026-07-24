@@ -3,21 +3,21 @@
 This document serves as the master execution ledger for the v62 massive scripting phase. Execution must follow these tracks sequentially to maintain context stability.
 
 ## Track 1: Static World NPCs (Nautilus & Victoria Island)
-- [ ] `1090000.js` - Kyrin (Pirate Job Instructor)
-- [ ] `1092000.js` - Muirhat
-- [ ] `1092001.js` - Blackbark
-- [ ] `1092002.js` - Jack
-- [ ] `1092007.js` - Bart
-- [ ] `1092008.js` - Bael
-- [ ] `1092011.js` - Morgan
-- [ ] `1092014.js` - Jonathan
-- [ ] `1092015.js` - Charles
-- [ ] `1092016.js` - Bonnie
-- [ ] `1092017.js` - Sharyl
-- [ ] `1092018.js` - Tangyoon (Nautilus Chef)
-- [ ] `1092019.js` - Mrs. Reade
-- [ ] `1094000.js` - Guen (Nautilus Weapon/Armor Seller)
-- [ ] `1094002.js` - Joyce (Nautilus Potion Seller)
+- [x] `1090000.js` - Kyrin (Pirate Job Instructor)
+- [x] `1092000.js` - Muirhat
+- [x] `1092001.js` - Blackbark
+- [x] `1092002.js` - Jack
+- [x] `1092007.js` - Bart
+- [x] `1092008.js` - Bael
+- [x] `1092011.js` - Morgan
+- [x] `1092014.js` - Jonathan
+- [x] `1092015.js` - Charles
+- [x] `1092016.js` - Bonnie
+- [x] `1092017.js` - Sharyl
+- [x] `1092018.js` - Tangyoon (Nautilus Chef)
+- [x] `1092019.js` - Mrs. Reade
+- [x] `1094000.js` - Guen (Nautilus Weapon/Armor Seller)
+- [x] `1094002.js` - Joyce (Nautilus Potion Seller)
 
 ## Track 2: Job Advancement & Quest Chains (Pirate Path)
 - [ ] `1090000.js` - Kyrin (1st, 2nd, 3rd, and 4th Job Advancement scripts)

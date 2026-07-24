@@ -1,9 +1,31 @@
-﻿load('nashorn:mozilla_compat.js');
 /*
- * OriginalMS - Nautilus NPC 1092016
+ * Bonnie - 1092016
+ * OriginalMS v62 Scripting Project
  */
+var status = 0;
 
 function start() {
-    cm.sendOk("We sailed from a far-off land across the ocean. Victoria Island is vast, but the sea is endless.");
-    cm.dispose();
+    status = -1;
+    action(1, 0, 0);
+}
+
+function action(mode, type, selection) {
+    if (mode == -1) {
+        cm.dispose();
+    } else {
+        if (mode == 0 && status == 0) {
+            cm.dispose();
+            return;
+        }
+        if (mode == 1)
+            status++;
+        else
+            status--;
+            
+        if (status == 0) {
+            cm.sendNext("Welcome aboard the Nautilus!");
+        } else if (status == 1) {
+            cm.dispose();
+        }
+    }
 }
