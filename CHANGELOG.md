@@ -6,7 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
-## [Unreleased] - Target: 2026-10-25
+## [Unreleased] - Target: TBA
+
+## [3.1.0-v62] - 2026-07-24
 
 ### Fixed
 - **Trade Duplication Exploit** - Patched a race condition in `MapleTrade.completeTrade()` that allowed item duplication via concurrent confirm packets.
@@ -14,9 +16,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - **Inventory Drop Casting** - Fixed a synchronization gap in `ItemMoveHandler` preventing macro packet drop-casting duplication.
 - **Pet Loot Restrictions** - Overhauled `PetLootHandler` to accurately recognize the `Item Pouch (1812001)` cash shop item and allow pets to loot items dropped by the owner.
 - **Pirate Corkscrew Blow Calculation** - Integrated `charge` packet decoding into `AbstractDealDamageHandler` to dynamically modify the damage threshold for fully-charged Corkscrew Blow attacks, preventing false-positive Autobans.
+- **Horntail Concurrency Crash** - Patched `HontalePQ.js` to eliminate `ConcurrentModificationException` thread crashes triggered when a PQ instance disposed itself inside a global iterator loop.
 
 ### Added
-- **Scripting Blueprint** - Initialized phased scripting architecture ledger for missing v62 JavaScript assets.
+- **Massive Scripting Phase** - Initialized phased scripting architecture ledger for missing v62 JavaScript assets.
+- **Track 1: Static World NPCs** - Generated 15 NPC scripts for Nautilus Harbor using Rhinoscript/JavaScript, including `cm.openShop()` integration.
+- **Track 2: Pirate Job Advancements** - Programmed the complete 1st, 2nd, 3rd, and 4th Pirate job advancement sequence within `1090000.js` (Kyrin) utilizing Fast-Track instance bypassing.
+- **Track 3: Monster Carnival PQ** - Programmed the JavaScript orchestration tier for CPQ, including `MonsterCarnivalPQ.js` event lifecycle and `2042000.js` (Spiegelmann) party registration logic.
 
 
 ## [1.1.0] - 2023-12-03
