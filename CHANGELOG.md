@@ -15,6 +15,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - **Pet Loot Restrictions** - Overhauled `PetLootHandler` to accurately recognize the `Item Pouch (1812001)` cash shop item and allow pets to loot items dropped by the owner.
 - **Pirate Corkscrew Blow Calculation** - Integrated `charge` packet decoding into `AbstractDealDamageHandler` to dynamically modify the damage threshold for fully-charged Corkscrew Blow attacks, preventing false-positive Autobans.
 
+### Added
+- **Scripting Blueprint** - Initialized phased scripting architecture ledger for missing v62 JavaScript assets.
+
 
 ## [1.1.0] - 2023-12-03
 

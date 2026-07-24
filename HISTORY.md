@@ -5,6 +5,11 @@ Format: chronological, newest entries at top.
 
 ---
 
+## 2026-07-24 - Scripting Phase Blueprint
+
+### Phase Initialization
+Generated the master architectural blueprint for the v62 massive scripting phase (`ORIGINALMS_SCRIPTING_PLAN.md`). Transitioning execution focus away from core Java mechanics and towards the JavaScript Rhino engine assets across three specialized tracks: Static NPCs, Job Quests, and Complex State Engines.
+
 ## 2026-07-24 - Core Security & Mechanics Patch
 
 ### Patch Summary
