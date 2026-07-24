@@ -221,8 +221,10 @@ public class MapleTrade {
         MapleTrade local = c.getTrade();
         MapleTrade partner = local.getPartner();
         if (partner.isLocked()) {
-            synchronized (local) {
-                synchronized (partner) {
+            MapleTrade first = local.getChr().getId() < partner.getChr().getId() ? local : partner;
+            MapleTrade second = local.getChr().getId() < partner.getChr().getId() ? partner : local;
+            synchronized (first) {
+                synchronized (second) {
                     if (local.isCompleted() || partner.isCompleted()) return;
                     local.complete1();
                     partner.complete1();
