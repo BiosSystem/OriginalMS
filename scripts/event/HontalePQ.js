@@ -1,4 +1,4 @@
-﻿load('nashorn:mozilla_compat.js');
+load('nashorn:mozilla_compat.js');
 /* 
  * Horntail Party Quest Event Script
  */
@@ -50,8 +50,8 @@ function setup() {
     eim.setProperty("bulbWay", 0);
     eim.setProperty("leftWingKilled", "false");
     eim.setProperty("rightWingKilled", "false");
-    em.schedule("timeOut", 60000 * 30);
-    em.schedule("broadcastClock", 1500);
+    eim.schedule("timeOut", 60000 * 30);
+    eim.schedule("broadcastClock", 1500);
     eim.setProperty("entryTimestamp", System.currentTimeMillis() + (30 * 60000));
     var tehwat = Math.random() * 3;
     if (tehwat > 1) {
@@ -160,10 +160,8 @@ function allMonstersDead(eim) {
 function cancelSchedule() {
 }
 
-function timeOut() {
-    var iter = em.getInstances().iterator();
-    while (iter.hasNext()) {
-        var eim = iter.next();
+function timeOut(eim) {
+    if (eim != null) {
         if (eim.getPlayerCount() > 0) {
             var pIter = eim.getPlayers().iterator();
             while (pIter.hasNext()) {
@@ -186,26 +184,16 @@ function playerTimer(eim, player) {
     }
 }
 
-function broadcastClock(eim, player) {
-    var iter = em.getInstances().iterator();
-    while (iter.hasNext()) {
-        var eimInstance = iter.next();
-        if (eimInstance.getPlayerCount() > 0) {
-            var pIter = eimInstance.getPlayers().iterator();
+function broadcastClock(eim) {
+    if (eim != null) {
+        if (eim.getPlayerCount() > 0) {
+            var pIter = eim.getPlayers().iterator();
             while (pIter.hasNext()) {
-                playerClocks(eimInstance, pIter.next());
+                var player = pIter.next();
+                playerClocks(eim, player);
+                playerTimer(eim, player);
             }
         }
+        eim.schedule("broadcastClock", 1600);
     }
-    var iterr = em.getInstances().iterator();
-    while (iterr.hasNext()) {
-        var eimInstance = iterr.next();
-        if (eimInstance.getPlayerCount() > 0) {
-            var pIterr = eimInstance.getPlayers().iterator();
-            while (pIterr.hasNext()) {
-                playerTimer(eimInstance, pIterr.next());
-            }
-        }
-    }
-    em.schedule("broadcastClock", 1600);
 }
