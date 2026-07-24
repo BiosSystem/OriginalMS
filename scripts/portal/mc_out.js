@@ -1,37 +1,13 @@
 /*
-	This file is part of the OdinMS Maple Story Server
-    Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc> 
-                       Matthias Butz <matze@odinms.de>
-                       Jan Christian Meyer <vimes@odinms.de>
-
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License version 3
-    as published by the Free Software Foundation. You may not use, modify
-    or distribute this program under any other version of the
-    GNU Affero General Public License.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
-
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
-importPackage(Packages.server.maps);
-
-/*
-[CelticMS] Monster Carnival Reviving Field 1
-*/
-
+ * mc_out.js
+ * CPQ Exit Portal
+ * OriginalMS v62 Scripting Project
+ */
+ 
 function enter(pi) {
-	var returnMap = pi.getPlayer().getSavedLocation(SavedLocationType.MONSTER_CARNIVAL);
-	if (returnMap < 0) {
-		returnMap = 102000000; // Just Incase there is no saved location.
-	}
-	var target = pi.getPlayer().getClient().getChannelServer().getMapFactory().getMap(returnMap);
-	pi.getPlayer().changeMap(target);
-	pi.getPlayer().clearSavedLocation(SavedLocationType.MONSTER_CARNIVAL);
-	return true;
+    pi.warp(980000000, "out00");
+    if (pi.getPlayer().getMonsterCarnival() != null) {
+        pi.getPlayer().setMonsterCarnival(null);
+    }
+    return true;
 }

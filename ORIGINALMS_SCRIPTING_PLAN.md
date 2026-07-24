@@ -26,16 +26,6 @@ This document serves as the master execution ledger for the v62 massive scriptin
 - [x] `pirate_in0.js`, `pirate_in1.js` - Portal script for test rooms [Bypassed for Fast-Track]
 
 ## Track 3: Complex State Engines (Monster Carnival PQ & Horntail)
-- [ ] `mc_out.js` - Monster Carnival exit portal logic
-- [ ] `cpqchallenge.js` - Monster Carnival lobby challenge interaction portal
-- [ ] `MCRevive1.js` - CPQ Room 1 Revive Portal
-- [ ] `MCRevive2.js` - CPQ Room 2 Revive Portal
-- [ ] `MCRevive3.js` - CPQ Room 3 Revive Portal
-- [ ] `MCRevive4.js` - CPQ Room 4 Revive Portal
-- [ ] `MCRevive5.js` - CPQ Room 5 Revive Portal
-- [ ] `MCRevive6.js` - CPQ Room 6 Revive Portal
-- [ ] `hontale_BR.js` - Horntail Boss Room entry portal
-- [ ] `hontale_Bopen.js` - Horntail specific state logic portal
 - [ ] `hontale_C.js` - Horntail Cave logic
 - [ ] `hontale_morph2.js` - Horntail phase transition portal
 - [ ] `hontale_out1.js` - Horntail exit portal
