@@ -78,25 +78,24 @@ public class StorageHandler extends AbstractMaplePacketHandler {
             int meso = slea.readInt();
             int storageMesos = storage.getMeso();
             int playerMesos = c.getPlayer().getMeso();
-            if ((meso > 0 && storageMesos >= meso) || (meso < 0 && playerMesos >= -meso)) {
-                if (meso < 0 && (storageMesos - meso) < 0) { // Storing with overflow.
-                    meso = -(Integer.MAX_VALUE - storageMesos);
-                    if ((-meso) > playerMesos) { // should never happen just a failsafe.
-                        throw new RuntimeException("everything sucks");
-                    }
-                } else if (meso > 0 && (playerMesos + meso) < 0) { // Taking out with overflow.
-                    meso = (Integer.MAX_VALUE - playerMesos);
-                    if ((meso) > storageMesos) { // should never happen just a failsafe.
-                        throw new RuntimeException("everything sucks");
-                    }
+            
+            if (meso > 0) { // Withdraw
+                if (playerMesos + meso < 0 || storageMesos < meso) {
+                    AutobanManager.getInstance().autoban(c, "LeaderMS| Meso Storage Withdraw Overflow Exploit");
+                    return;
                 }
                 storage.setMeso(storageMesos - meso);
                 c.getPlayer().gainMeso(meso, false, true, false);
-                FilePrinter.printBanco(c.getPlayer().getName() + ".txt", "Depositou (-) / Removeu (+) : " + meso + "\r\nTotal antes do deposito: " + storageMesos + "\r\nNo dia: " + sdf.format(Calendar.getInstance().getTime()) + " as " + sdf2.format(Calendar.getInstance().getTime()) + ".");
-            } else {
-                AutobanManager.getInstance().addPoints(c, 1000, 0, "Tentar armazenar ou retirar quantidade disponivel de mesos (" + meso + "/" + storage.getMeso() + "/" + c.getPlayer().getMeso() + ")");
-                return;
+            } else if (meso < 0) { // Deposit
+                int deposit = -meso;
+                if (storageMesos + deposit < 0 || playerMesos < deposit) {
+                    AutobanManager.getInstance().autoban(c, "LeaderMS| Meso Storage Deposit Overflow Exploit");
+                    return;
+                }
+                storage.setMeso(storageMesos + deposit);
+                c.getPlayer().gainMeso(-deposit, false, true, false);
             }
+            FilePrinter.printBanco(c.getPlayer().getName() + ".txt", "Depositou (-) / Removeu (+) : " + meso + "\r\nTotal antes do deposito: " + storageMesos + "\r\nNo dia: " + sdf.format(Calendar.getInstance().getTime()) + " as " + sdf2.format(Calendar.getInstance().getTime()) + ".");
             storage.sendMeso(c);
         } else if (mode == 8) { // Close.
             storage.close();

@@ -44,6 +44,7 @@ public class MapleTrade {
     boolean locked = false;
     private MapleCharacter chr;
     private byte number;
+    private boolean completed = false;
 
     public MapleTrade(byte number, MapleCharacter c) {
         chr = c;
@@ -207,24 +208,39 @@ public class MapleTrade {
         return true;
     }
 
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
+
     public static void completeTrade(MapleCharacter c) {
         c.getTrade().lock();
         MapleTrade local = c.getTrade();
         MapleTrade partner = local.getPartner();
         if (partner.isLocked()) {
-            local.complete1();
-            partner.complete1();
-            // check for full inventories
-            if (!local.fitsInInventory() || !partner.fitsInInventory()) {
-                cancelTrade(c);
-                c.getClient().getSession().write(MaplePacketCreator.serverNotice(5, "There is not enough inventory space to complete the trade."));
-                partner.getChr().getClient().getSession().write(MaplePacketCreator.serverNotice(5, "There is not enough inventory space to complete the trade."));
-                return;
+            synchronized (local) {
+                synchronized (partner) {
+                    if (local.isCompleted() || partner.isCompleted()) return;
+                    local.complete1();
+                    partner.complete1();
+                    // check for full inventories
+                    if (!local.fitsInInventory() || !partner.fitsInInventory()) {
+                        cancelTrade(c);
+                        c.getClient().getSession().write(MaplePacketCreator.serverNotice(5, "There is not enough inventory space to complete the trade."));
+                        partner.getChr().getClient().getSession().write(MaplePacketCreator.serverNotice(5, "There is not enough inventory space to complete the trade."));
+                        return;
+                    }
+                    local.complete2();
+                    partner.complete2();
+                    local.setCompleted(true);
+                    partner.setCompleted(true);
+                    partner.getChr().setTrade(null);
+                    c.setTrade(null);
+                }
             }
-            local.complete2();
-            partner.complete2();
-            partner.getChr().setTrade(null);
-            c.setTrade(null);
         }
     }
 

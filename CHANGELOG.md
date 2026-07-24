@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [Unreleased] - Target: 2026-10-25
+
+### Fixed
+- **Trade Duplication Exploit** - Patched a race condition in `MapleTrade.completeTrade()` that allowed item duplication via concurrent confirm packets.
+- **Meso Storage DoS Exploit** - Patched `StorageHandler` bounds checking to correctly handle `Integer.MIN_VALUE` rollovers, replacing hard crashes with strict Autoban routines.
+- **Inventory Drop Casting** - Fixed a synchronization gap in `ItemMoveHandler` preventing macro packet drop-casting duplication.
+- **Pet Loot Restrictions** - Overhauled `PetLootHandler` to accurately recognize the `Item Pouch (1812001)` cash shop item and allow pets to loot items dropped by the owner.
+- **Pirate Corkscrew Blow Calculation** - Integrated `charge` packet decoding into `AbstractDealDamageHandler` to dynamically modify the damage threshold for fully-charged Corkscrew Blow attacks, preventing false-positive Autobans.
+
+
 ## [1.1.0] - 2023-12-03
 
 ### Added

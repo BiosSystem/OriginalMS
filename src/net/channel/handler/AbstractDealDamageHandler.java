@@ -344,8 +344,13 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
                     case 3221007: // Snipe
                         maximumDamageToMonster = 99999;
                         break;
-                    case 4221001:
+                    case 4221001: // Assassinate
                         maximumDamageToMonster = 400000;
+                        break;
+                    case 5101004: // Corkscrew Blow
+                        if (attack.charge > 0) {
+                            maximumDamageToMonster = (int) (maximumDamageToMonster * (Math.max(1.0, attack.charge / 1000.0)));
+                        }
                         break;
                     default:
                         break;
