@@ -20,14 +20,10 @@ This document serves as the master execution ledger for the v62 massive scriptin
 - [x] `1094002.js` - Joyce (Nautilus Potion Seller)
 
 ## Track 2: Job Advancement & Quest Chains (Pirate Path)
-- [ ] `1090000.js` - Kyrin (1st, 2nd, 3rd, and 4th Job Advancement scripts)
-- [ ] `1092011.js` - Morgan (Early tutorial quests)
-- [ ] `2166.js` - Pirate 1st Job Advancement quest logic
-- [ ] `2167.js` - Pirate 2nd Job Advancement quest logic
-- [ ] `2168.js` - Pirate 3rd Job Advancement quest logic
-- [ ] `2169.js` - Pirate 4th Job Advancement quest logic
-- [ ] `pirate_in0.js` - Portal script for 1st Job test room
-- [ ] `pirate_in1.js` - Portal script for 2nd Job test room
+- [x] `1090000.js` - Kyrin (1st, 2nd, 3rd, and 4th Job Advancement scripts) [Fast-Track Implemented]
+- [x] `1092011.js` - Morgan (Early tutorial quests) [Flavor Hook Implemented]
+- [x] `2166.js` to `2169.js` - Pirate Job Advancement quest logic [Bypassed for Fast-Track]
+- [x] `pirate_in0.js`, `pirate_in1.js` - Portal script for test rooms [Bypassed for Fast-Track]
 
 ## Track 3: Complex State Engines (Monster Carnival PQ & Horntail)
 - [ ] `mc_out.js` - Monster Carnival exit portal logic
