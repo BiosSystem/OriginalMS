@@ -91,8 +91,8 @@ public class PetLootHandler extends AbstractMaplePacketHandler {
                         }
                     }
                 }
-                if (mapitem.getMeso() > 0 && mapitem.getDropper() != c.getPlayer()) {
-                    if (c.getPlayer().getInventory(MapleInventoryType.EQUIPPED).findById(1812000) != null) { //Evil hax until I find the right packet - Ramon
+                if (mapitem.getMeso() > 0) {
+                    if (c.getPlayer().getInventory(MapleInventoryType.EQUIPPED).findById(1812000) != null) {
                         c.getPlayer().gainMeso(mapitem.getMeso(), true, true);
                         c.getPlayer().getMap().broadcastMessage(MaplePacketCreator.removeItemFromMap(mapitem.getObjectId(), 5, c.getPlayer().getId(), true, c.getPlayer().getPetIndex(pet)), mapitem.getPosition());
                         c.getPlayer().getCheatTracker().pickupComplete();
@@ -103,28 +103,33 @@ public class PetLootHandler extends AbstractMaplePacketHandler {
                         c.getSession().write(MaplePacketCreator.enableActions());
                         return;
                     }
-                } else if (mapitem.getDropper() != c.getPlayer()) {
-                    if (ii.isPet(mapitem.getItem().getItemId())) {
-                        int petId = MaplePet.createPet(mapitem.getItem().getItemId());
-                        if (petId == -1) {
+                } else {
+                    if (c.getPlayer().getInventory(MapleInventoryType.EQUIPPED).findById(1812001) != null) {
+                        if (ii.isPet(mapitem.getItem().getItemId())) {
+                            int petId = MaplePet.createPet(mapitem.getItem().getItemId());
+                            if (petId == -1) {
+                                return;
+                            }
+                            MapleInventoryManipulator.addById(c, mapitem.getItem().getItemId(), mapitem.getItem().getQuantity(), null);
+                            c.getPlayer().getMap().broadcastMessage(MaplePacketCreator.removeItemFromMap(mapitem.getObjectId(), 5, c.getPlayer().getId()), mapitem.getPosition());
+                            c.getPlayer().getCheatTracker().pickupComplete();
+                            c.getPlayer().getMap().removeMapObject(ob);
+                        } else if (MapleInventoryManipulator.addFromDrop(c, mapitem.getItem(), "Picked up by " + c.getPlayer().getName(), true)) {
+                            c.getPlayer().getMap().broadcastMessage(MaplePacketCreator.removeItemFromMap(mapitem.getObjectId(), 5, c.getPlayer().getId(), true, c.getPlayer().getPetIndex(pet)), mapitem.getPosition());
+                            c.getPlayer().getCheatTracker().pickupComplete();
+                            c.getPlayer().getMap().removeMapObject(ob);
+                        } else {
+                            c.getPlayer().getCheatTracker().pickupComplete();
                             return;
                         }
-                        MapleInventoryManipulator.addById(c, mapitem.getItem().getItemId(), mapitem.getItem().getQuantity(), null);
-                        c.getPlayer().getMap().broadcastMessage(MaplePacketCreator.removeItemFromMap(mapitem.getObjectId(), 5, c.getPlayer().getId()), mapitem.getPosition());
-                        c.getPlayer().getCheatTracker().pickupComplete();
-                        c.getPlayer().getMap().removeMapObject(ob);
-                    } else if (MapleInventoryManipulator.addFromDrop(c, mapitem.getItem(), "Picked up by " + c.getPlayer().getName(), true)) {
-                        c.getPlayer().getMap().broadcastMessage(MaplePacketCreator.removeItemFromMap(mapitem.getObjectId(), 5, c.getPlayer().getId(), true, c.getPlayer().getPetIndex(pet)), mapitem.getPosition());
-                        c.getPlayer().getCheatTracker().pickupComplete();
-                        c.getPlayer().getMap().removeMapObject(ob);
                     } else {
                         c.getPlayer().getCheatTracker().pickupComplete();
+                        mapitem.setPickedUp(false);
+                        c.getSession().write(MaplePacketCreator.enableActions());
                         return;
                     }
                 }
-                if (mapitem.getDropper() != c.getPlayer()) {
-                    mapitem.setPickedUp(true);
-                }
+                mapitem.setPickedUp(true);
             }
         }
         c.getSession().write(MaplePacketCreator.enableActions());
