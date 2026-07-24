@@ -76,6 +76,10 @@ public class StorageHandler extends AbstractMaplePacketHandler {
             c.getPlayer().dropMessage(1, "Desculpe, armazenamento esta indisponivel");
         } else if (mode == 7) { // Meso.
             int meso = slea.readInt();
+            if (meso == Integer.MIN_VALUE) {
+                AutobanManager.getInstance().autoban(c, "LeaderMS| Meso Storage Overflow Exploit");
+                return;
+            }
             int storageMesos = storage.getMeso();
             int playerMesos = c.getPlayer().getMeso();
             

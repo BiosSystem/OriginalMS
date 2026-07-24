@@ -92,7 +92,14 @@ public class PetLootHandler extends AbstractMaplePacketHandler {
                     }
                 }
                 if (mapitem.getMeso() > 0) {
-                    if (c.getPlayer().getInventory(MapleInventoryType.EQUIPPED).findById(1812000) != null) {
+                    boolean hasMesoMagnet = false;
+                    for (client.IItem item : c.getPlayer().getInventory(MapleInventoryType.EQUIPPED).list()) {
+                        if (item.getItemId() == 1812000 && item.getPosition() <= -114) { // Dynamic Pet Equip slot
+                            hasMesoMagnet = true;
+                            break;
+                        }
+                    }
+                    if (hasMesoMagnet) {
                         c.getPlayer().gainMeso(mapitem.getMeso(), true, true);
                         c.getPlayer().getMap().broadcastMessage(MaplePacketCreator.removeItemFromMap(mapitem.getObjectId(), 5, c.getPlayer().getId(), true, c.getPlayer().getPetIndex(pet)), mapitem.getPosition());
                         c.getPlayer().getCheatTracker().pickupComplete();
@@ -104,7 +111,14 @@ public class PetLootHandler extends AbstractMaplePacketHandler {
                         return;
                     }
                 } else {
-                    if (c.getPlayer().getInventory(MapleInventoryType.EQUIPPED).findById(1812001) != null) {
+                    boolean hasItemPouch = false;
+                    for (client.IItem item : c.getPlayer().getInventory(MapleInventoryType.EQUIPPED).list()) {
+                        if (item.getItemId() == 1812001 && item.getPosition() <= -114) { // Dynamic Pet Equip slot
+                            hasItemPouch = true;
+                            break;
+                        }
+                    }
+                    if (hasItemPouch) {
                         if (ii.isPet(mapitem.getItem().getItemId())) {
                             int petId = MaplePet.createPet(mapitem.getItem().getItemId());
                             if (petId == -1) {
