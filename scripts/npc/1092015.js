@@ -1,9 +1,31 @@
-﻿load('nashorn:mozilla_compat.js');
 /*
- * OriginalMS - Nautilus NPC 1092015
+ * Charles - 1092015
+ * OriginalMS v62 Scripting Project
  */
+var status = 0;
 
 function start() {
-    cm.sendOk("Halt! This section leads to the captain's private quarters. Please state your business or move along.");
-    cm.dispose();
+    status = -1;
+    action(1, 0, 0);
+}
+
+function action(mode, type, selection) {
+    if (mode == -1) {
+        cm.dispose();
+    } else {
+        if (mode == 0 && status == 0) {
+            cm.dispose();
+            return;
+        }
+        if (mode == 1)
+            status++;
+        else
+            status--;
+            
+        if (status == 0) {
+            cm.sendNext("We've got the finest crew in all of Victoria Island.");
+        } else if (status == 1) {
+            cm.dispose();
+        }
+    }
 }

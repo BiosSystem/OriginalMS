@@ -1,113 +1,80 @@
-﻿load('nashorn:mozilla_compat.js');
 /*
- * OriginalMS - Monster Carnival PQ Event Script
- * Map Range: 980000001 - 980000006 (CPQ1), 980031xxx (CPQ2)
- * Lobby: 980000000
+ * MonsterCarnivalPQ.js
+ * OriginalMS v62 Scripting Project
  */
 
-importPackage(Packages.world);
 importPackage(Packages.client);
-importPackage(Packages.server.maps);
-importPackage(java.lang);
+importPackage(Packages.server);
 
-var exitMap;
-var minPlayers = 2;
+var returnMap = 980000000;
 
 function init() {
+    // Required init method
 }
 
 function setup(eim) {
-    exitMap = em.getChannelServer().getMapFactory().getMap(980000000);
-    eim.setProperty("canEnter", "true");
-    eim.setProperty("redCP", "0");
-    eim.setProperty("blueCP", "0");
+    var mapId = parseInt(eim.getProperty("mapId"));
+    var mapFactory = eim.getChannelServer().getMapFactory();
+    
+    // Instantiate all relevant CPQ maps for this instance
+    eim.setProperty("isFinished", "false");
+    
+    var eventMap = mapFactory.getMap(mapId);
+    return eim;
 }
 
 function playerEntry(eim, player) {
-    var map = eim.getMapInstance(980000001);
-    player.changeMap(map, map.getPortal(0));
+    var mapId = parseInt(eim.getProperty("mapId"));
+    var eventMap = eim.getMapFactory().getMap(mapId);
+    player.changeMap(eventMap, eventMap.getPortal(0));
 }
 
 function playerRevive(eim, player) {
-    player.setHp(500);
-    player.setStance(0);
-    var map = player.getMap();
-    player.changeMap(map, map.getPortal(0));
+    // Respawn in CPQ without EXP loss
+    var mapId = parseInt(eim.getProperty("mapId"));
+    player.addHP(50);
+    var eventMap = eim.getMapFactory().getMap(mapId);
+    player.changeMap(eventMap, eventMap.getPortal(0));
     return true;
 }
 
-function playerDead(eim, player) {
+function scheduledTimeout(eim) {
+    if (eim.getProperty("isFinished").equals("false")) {
+        eim.setProperty("isFinished", "true");
+        // End of match. In a fully built emulator, the Java engine handles the CP comparison 
+        // and throws the win/loss packet. We just warp them out after a delay.
+        eim.schedule("warpOut", 10000); 
+    }
+}
+
+function warpOut(eim) {
+    var players = eim.getPlayers();
+    var mapFactory = eim.getChannelServer().getMapFactory();
+    var exitMap = mapFactory.getMap(returnMap);
+    
+    for (var i = 0; i < players.size(); i++) {
+        players.get(i).changeMap(exitMap, exitMap.getPortal(0));
+        players.get(i).setMonsterCarnival(null); // Clear reference
+    }
+    eim.dispose();
 }
 
 function playerDisconnected(eim, player) {
-    eim.unregisterPlayer(player);
-    player.changeMap(exitMap, exitMap.getPortal(0));
-    var party = eim.getPlayers();
-    if (party.size() < minPlayers) {
-        end(eim, "Not enough players remaining. Monster Carnival has ended.");
+    player.setMap(eim.getChannelServer().getMapFactory().getMap(returnMap));
+    player.setMonsterCarnival(null);
+    if (eim.getPlayerCount() == 0) {
+        eim.dispose();
     }
-}
-
-function monsterValue(eim, mobId) {
-    return 1;
 }
 
 function leftParty(eim, player) {
-    playerExit(eim, player);
+    playerDisconnected(eim, player);
 }
 
 function disbandParty(eim) {
-    var party = eim.getPlayers();
-    for (var i = 0; i < party.size(); i++) {
-        playerExit(eim, party.get(i));
-    }
-    eim.dispose();
-}
-
-function playerExit(eim, player) {
-    eim.unregisterPlayer(player);
-    player.changeMap(exitMap, exitMap.getPortal(0));
-}
-
-function end(eim, msg) {
-    var iter = eim.getPlayers().iterator();
-    while (iter.hasNext()) {
-        var player = iter.next();
-        player.getClient().getSession().write(MaplePacketCreator.serverNotice(6, msg));
-        eim.unregisterPlayer(player);
-        if (player != null) {
-            player.changeMap(exitMap, exitMap.getPortal(0));
-        }
-    }
-    eim.dispose();
-}
-
-function removePlayer(eim, player) {
-    eim.unregisterPlayer(player);
-    player.getMap().removePlayer(player);
-    player.setMap(exitMap);
+    warpOut(eim);
 }
 
 function clearPQ(eim) {
-    end(eim, "Monster Carnival has concluded!");
-}
-
-function finish(eim) {
-    var iter = eim.getPlayers().iterator();
-    while (iter.hasNext()) {
-        var player = iter.next();
-        eim.unregisterPlayer(player);
-        player.changeMap(exitMap, exitMap.getPortal(0));
-    }
-    eim.dispose();
-}
-
-function allMonstersDead(eim) {
-}
-
-function cancelSchedule() {
-}
-
-function timeOut() {
-    end(eim, "Time is up! Monster Carnival match completed.");
+    scheduledTimeout(eim);
 }

@@ -1,9 +1,31 @@
-﻿load('nashorn:mozilla_compat.js');
 /*
- * OriginalMS - Nautilus NPC 1092017
+ * Sharyl - 1092017
+ * OriginalMS v62 Scripting Project
  */
+var status = 0;
 
 function start() {
-    cm.sendOk("Steady on the helm! Navigating a submarine through shallow reefs requires constant vigilance.");
-    cm.dispose();
+    status = -1;
+    action(1, 0, 0);
+}
+
+function action(mode, type, selection) {
+    if (mode == -1) {
+        cm.dispose();
+    } else {
+        if (mode == 0 && status == 0) {
+            cm.dispose();
+            return;
+        }
+        if (mode == 1)
+            status++;
+        else
+            status--;
+            
+        if (status == 0) {
+            cm.sendNext("Captain Kyrin is a tough but fair leader.");
+        } else if (status == 1) {
+            cm.dispose();
+        }
+    }
 }

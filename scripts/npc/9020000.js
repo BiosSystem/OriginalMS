@@ -26,15 +26,15 @@ function action(mode, type, selection) {
 			status--;
 		if (status == 0) {
 			if (cm.getParty() == null) { 
-				cm.sendOk("                                    #e<LeaderMS-PQ>#n\r\n\r\nQue tal voce e seu grupo terminarem uma missao juntos? Aqui voce vai encontrar obstaculos e problemas que so poderao ser resolvidos em equipe. Se quiser tentar, peca ao #blider do seu grupo#k para falar comigo.");
+				cm.sendOk("How about you and your party complete a quest together? Here you will find obstacles and problems that can only be solved with teamwork. If you want to try, ask your #bparty leader#k to talk to me.");
 				cm.dispose();
                                 return;
 			} if (!cm.isLeader()) { 
-				cm.sendSimple("Voce nao e o lider do grupo.");
+				cm.sendSimple("You are not the party leader.");
 				cm.dispose();
                                 return;
                          } if (checkLevelsAndMap(minLevel, maxLevel) == 2) {  
-	                          cm.sendOk("Acho que nem todos os membros do seu grupo estao presentes.");
+	                          cm.sendOk("It seems not all members of your party are present here.");
                                   cm.dispose();
                                   return;
                          } else {
@@ -60,25 +60,25 @@ function action(mode, type, selection) {
 				if (next) {
 				  var em = cm.getEventManager("KerningPQ");
 	                          if (em == null) {
-	                          cm.sendOk("Este evento esta indisponivel.");
+	                          cm.sendOk("This event is currently unavailable.");
 		                  } else {
 		                  var prop = em.getProperty("state");
 		                  if (prop.equals("0") || prop == null) {
 				  em.startInstance(cm.getParty(),cm.getChar().getMap());
 				  cm.dispose();
 		                    } else {
-		            	      cm.sendOk("Um outro grupo ja entrou para completar a missao. Por favor, tente mais tarde.");
+		            	      cm.sendOk("Another party has already entered to complete the quest. Please try again later.");
                                       cm.dispose();
 		                 }
 		               }
 	                 } else {
-		                   cm.sendOk("Alguem no seu grupo nao esta entre os niveis 21~30. Por favor, verifique novamente.");
+		                   cm.sendOk("Someone in your party is not between levels 21~30. Please double check.");
                                    cm.dispose();
 	                        }
 			}
 		}
 		else {
-			cm.sendOk("Dialogo perdido.");
+			cm.sendOk("Lost dialog.");
 			cm.dispose();
 		}
 	}

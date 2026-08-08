@@ -35,7 +35,9 @@ public class ItemMoveHandler extends AbstractMaplePacketHandler {
                 AutobanManager.getInstance().autoban(c, "LeaderMS| Drop-dupe (" + c.getPlayer().getInventory(type).getItem(src).getItemId() + ").");
                 return;
             }
-            MapleInventoryManipulator.drop(c, type, src, quantity);
+            synchronized (c.getPlayer().getInventory(type)) {
+                MapleInventoryManipulator.drop(c, type, src, quantity);
+            }
         } else {
             MapleInventoryManipulator.move(c, type, src, dst);
         }

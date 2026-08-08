@@ -1,116 +1,99 @@
-load('nashorn:mozilla_compat.js');
 /*
-	This file is part of the OdinMS Maple Story Server
-    Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc> 
-                       Matthias Butz <matze@odinms.de>
-                       Jan Christian Meyer <vimes@odinms.de>
+ * 1090000 - Kyrin
+ * Pirate Job Advancement (Fast-Track)
+ * OriginalMS v62 Scripting Project
+ */
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License version 3
-    as published by the Free Software Foundation. You may not use, modify
-    or distribute this program under any other version of the
-    GNU Affero General Public License.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
-
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-
-/*  Kyrin
-	Pirate Job Advancement
-*/
+importPackage(Packages.client);
 
 var status = 0;
 var job;
 
-importPackage(Packages.client);
-
 function start() {
-	status = -1;
-	action(1, 0, 0);
+    status = -1;
+    action(1, 0, 0);
 }
 
 function action(mode, type, selection) {
-	if (mode == -1) {
-		cm.dispose();
-	} else {
-		if ((mode == 0 && status == 2) || (mode == 0 && status == 13)) {
-			cm.sendOk("Come back once you have thought about it some more.");
-			cm.dispose();
-			return;
-		}
-		if (mode == 1)
-			status++;
-		else
-			status--;
-		if (status == 0) {
-			if (cm.getJob().equals(MapleJob.BEGINNER)) {
-				if (cm.getLevel() >= 10)
-					cm.sendNext("So you decided to become a #rPirate#k?");
-				else {
-					cm.sendOk("Train a bit more and I can show you the way of the #rPirate#k.")
-					cm.dispose();
-				}
-			} else {
-				if (cm.getLevel() >= 30 && cm.getJob().equals(MapleJob.PIRATE)) {
-					status = 10;
-					cm.sendNext("The progress you have made is astonishing.");
-				} else if (cm.getLevel() >= 70 && (cm.getJob().equals(MapleJob.GUNSLINGER) || cm.getJob().equals(MapleJob.BRAWLER))) {
-					cm.sendOk("Please go visit #bPedro#k. He resides in #bEl Nath#k.");
-					cm.dispose();
-				} else if (cm.getLevel() < 30 && cm.getJob().equals(MapleJob.PIRATE)) {
-					cm.sendOk("Please come back to see me once you have trained more.");
-					cm.dispose();
-				} else if (cm.getLevel() >= 120 && (cm.getJob().equals(MapleJob.OUTLAW) || cm.getJob().equals(MapleJob.MARAUDER))) {
-					cm.sendOk("Please go visit #bSamuel#k. He resides in #bLeafre#k.");
-					cm.dispose();
-				} else {
-					cm.sendOk("You are not a #rPirate#k, I have no business with you.");
-					cm.dispose();
-				}111
-			}
-		} else if (status == 1) {
-			cm.sendNextPrev("It is an important and final choice. You will not be able to turn back.");
-		} else if (status == 2) {
-			cm.sendYesNo("Do you want to become a #rPirate#k?");
-		} else if (status == 3) {
-			if (cm.getJob().equals(MapleJob.BEGINNER)) {
-				cm.getPlayer().updateSingleStat(MapleStat.STR, 4, false);
-				cm.getPlayer().updateSingleStat(MapleStat.DEX, 25, false);
-				cm.getPlayer().updateSingleStat(MapleStat.INT, 4, false);
-				cm.getPlayer().updateSingleStat(MapleStat.LUK, 4, false);
-				cm.getPlayer().updateSingleStat(MapleStat.AVAILABLEAP, 33, false);
-				cm.changeJob(MapleJob.PIRATE);
-				cm.gainItem(1492000, 1);
-                                cm.gainItem(1482000, 1);
-				cm.gainItem(2330000, 1);
+    if (mode == -1) {
+        cm.dispose();
+    } else {
+        if (mode == 0 && status >= 0) {
+            cm.dispose();
+            return;
+        }
+        if (mode == 1)
+            status++;
+        else
+            status--;
 
-			}
-			cm.sendOk("So be it! Now go, and go with pride.");
-			cm.dispose();
-		} else if (status == 11) {
-			cm.sendNextPrev("You are now ready to take the next step as a #rBrawler#k or #rGunslinger#k.");
-		} else if (status == 12) {
-			cm.sendSimple("What do you want to become?#b\r\n#L0#Brawler#l\r\n#L1#Gunslinger#l#k");
-		} else if (status == 13) {
-			var jobName;
-			if (selection == 0) {
-				jobName = "BRAWLER";
-				job = MapleJob.BRAWLER;
-			} else {
-				jobName = "GUNSLINGER";
-				job = MapleJob.GUNSLINGER;
-
-			}
-			cm.sendYesNo("Do you want to become a #r" + jobName + "#k?");
-		} else if (status == 14) {
-			cm.changeJob(job);
-			cm.sendOk("So be it! Now go, my servant.");
-			cm.dispose();
-		}
-	}
-}	
+        if (status == 0) {
+            if (cm.getJob().equals(MapleJob.BEGINNER)) {
+                if (cm.getLevel() >= 10 && cm.getPlayer().getDex() >= 20) {
+                    cm.sendNext("You seem to have what it takes. Do you want to become a #rPirate#k?");
+                } else {
+                    cm.sendOk("Train a bit more. You need to be Level 10 and have at least 20 DEX to become a Pirate.");
+                    cm.dispose();
+                }
+            } else if (cm.getJob().getId() == 500) { // Pirate
+                if (cm.getLevel() >= 30) {
+                    cm.sendSimple("You're ready for your 2nd Job Advancement. Which path will you choose?#b\r\n#L0#Brawler#l\r\n#L1#Gunslinger#l#k");
+                } else {
+                    cm.sendOk("You need to be at least Level 30 to take the next step.");
+                    cm.dispose();
+                }
+            } else if (cm.getJob().getId() == 510 || cm.getJob().getId() == 520) { // Brawler / Gunslinger
+                if (cm.getLevel() >= 70) {
+                    cm.sendNext("You've grown incredibly strong. Are you ready for your 3rd Job Advancement?");
+                } else {
+                    cm.sendOk("You need to be at least Level 70 to take the next step.");
+                    cm.dispose();
+                }
+            } else if (cm.getJob().getId() == 511 || cm.getJob().getId() == 521) { // Marauder / Outlaw
+                if (cm.getLevel() >= 120) {
+                    cm.sendNext("You have mastered the seas! Are you ready for your 4th and final Job Advancement?");
+                } else {
+                    cm.sendOk("You need to be at least Level 120 to take the next step.");
+                    cm.dispose();
+                }
+            } else {
+                cm.sendOk("May the wind guide your sails, Captain!");
+                cm.dispose();
+            }
+        } else if (status == 1) {
+            if (cm.getJob().equals(MapleJob.BEGINNER)) {
+                cm.changeJob(MapleJob.PIRATE);
+                cm.gainItem(1482000, 1); // Knuckle
+                cm.gainItem(1492000, 1); // Gun
+                cm.gainItem(2330000, 500); // Bullets
+                cm.sendOk("You are now a Pirate! I've given you some basic equipment to start your journey.");
+                cm.dispose();
+            } else if (cm.getJob().getId() == 500) {
+                if (selection == 0) {
+                    cm.changeJob(MapleJob.BRAWLER);
+                    cm.sendOk("You are now a Brawler! Rely on your fists and inner strength.");
+                } else if (selection == 1) {
+                    cm.changeJob(MapleJob.GUNSLINGER);
+                    cm.sendOk("You are now a Gunslinger! Rely on your speed and accuracy.");
+                }
+                cm.dispose();
+            } else if (cm.getJob().getId() == 510) {
+                cm.changeJob(MapleJob.MARAUDER);
+                cm.sendOk("You are now a Marauder!");
+                cm.dispose();
+            } else if (cm.getJob().getId() == 520) {
+                cm.changeJob(MapleJob.OUTLAW);
+                cm.sendOk("You are now an Outlaw!");
+                cm.dispose();
+            } else if (cm.getJob().getId() == 511) {
+                cm.changeJob(MapleJob.BUCCANEER);
+                cm.sendOk("You are now a Buccaneer! The true ruler of the seas.");
+                cm.dispose();
+            } else if (cm.getJob().getId() == 521) {
+                cm.changeJob(MapleJob.CORSAIR);
+                cm.sendOk("You are now a Corsair! The true ruler of the seas.");
+                cm.dispose();
+            }
+        }
+    }
+}
