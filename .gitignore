@@ -1,15 +1,26 @@
+# Java and IDEs
+*.class
+*.jar
+*.war
+*.ear
+*.log
+target/
+.idea/
+*.iml
+.vscode/
+bin/
+
+# OS generated files
 .DS_Store
-.svn
-./wz
-dist
+Thumbs.db
 
-# Keystores
-*.keystore
-*.truststore
-
-# Local AI session tracking & plan files (not for public repo)
+# AI and Planning Files (Local Only)
 Claude_Brain/
+ORIGINALMS_GAP_ANALYSIS.md
 ORIGINALMS_V62_PLAN.md
+ORIGINALMS_SCRIPTING_PLAN.md
 HISTORY.md
+ARCHITECTURE.md
 _cb.py
 _msg_rewrite.py
+full_log.txt

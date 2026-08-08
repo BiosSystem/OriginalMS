@@ -61,16 +61,16 @@ function action(mode, type, selection) {
 			status--;
 		if (cm.getPlayer().getMapId() == 200080101) {
 			if (status == 0) {
-				cm.sendSimple("Ola, sou a Fada Wonky.\r\nVoce quer explorar a Torre da Deusa? Alias, se seu grupo tiver pelo menos um guerreiro, bruxo, arqueiro e gatuno, eu vou dar a voce um pouco da Bencao de Wonky.\r\nO que voce gostaria de fazer hoje?#b\r\n#L0#Registrar-se para Entrar.#l\r\n#L1#Dar a Wonky alguma coisa para comer.#l");
+				cm.sendSimple("Hello, I am Wonky The Fairy.\r\nDo you want to explore the Tower of Goddess? By the way, if your party has at least one warrior, magician, bowman, and thief, I will give you Wonky's Blessing.\r\nWhat would you like to do today?#b\r\n#L0#Enter the Party Quest.#l\r\n#L1#Give Wonky something to eat.#l");
 			}else if (status == 1 && selection == 0) {
 				// Slate has no preamble, directly checks if you're in a party
 				if (cm.getParty() == null) { // no party
-					cm.sendOk("Voce nao esta no grupo. Voce precisa estar em um grupo para fazer isto!");
+					cm.sendOk("You are not in a party. You need to be in a party to do this!");
 					cm.dispose();
 	                return;
 				}
 				if (!cm.isLeader()) { // not party leader
-					cm.sendOk("Ei, preciso que o lider do seu grupo fale comigo, ninguem mais.");
+					cm.sendOk("Hey, I need your party leader to speak with me, no one else.");
 					cm.dispose();
 	            }else {
 					// Check teh partyy
@@ -127,34 +127,32 @@ function action(mode, type, selection) {
 						}
 						cm.dispose();
 					} else {
-						cm.sendOk("Ou nem todos os seus membros estao no meu mapa, ou eles nao estao na faixa de nivel certo.");
+						cm.sendOk("Either not all of your members are in my map, or they are not in the right level range.");
 						cm.dispose();
 					}
 				}
 			}
 			else if (status == 1 && selection == 1) {
-				cm.sendSimple("Awwn que legal o que voce tem para mim?#b\r\n#L0#Ice Cream Pop#l\r\n#L1#Red Bean Sundae#l\r\n#L2#Salad#l\r\n#L3#Pizza#l\r\n#L4#Fried Chicken#l\r\n#L5#Nada...#l#k");
+				cm.sendSimple("Awwn how nice! What do you have for me?#b\r\n#L0#Ice Cream Pop#l\r\n#L1#Red Bean Sundae#l\r\n#L2#Salad#l\r\n#L3#Pizza#l\r\n#L4#Fried Chicken#l\r\n#L5#Nothing...#l#k");
 			} else if (status == 2) {
 				foodSelection = selection;
 				if  (foodSelection >= 0 && foodSelection <= (foodArray.length - 2)) {
 					if (cm.haveItem(foodArray[foodSelection], 1)) {
-						cm.sendOk("Obrigado por me alimentar, mas ainda estou com fome!");
+						cm.sendOk("Thanks for feeding me, but I'm still hungry!");
 						cm.gainItem(foodArray[foodSelection], -1);
 						cm.dispose();
 					} else {
-						cm.sendNext("O que? Cade a comida?");
-						cm.playerMessage("Humor instavel, azedou.");
+						cm.sendNext("What? Where is the food?");
 						cm.dispose();
 					}
 				} else {
-						cm.sendNext("O que? voce esta brincando comigo?");
-						cm.playerMessage("Humor instavel, azedou.");
+						cm.sendNext("What? Are you kidding me?");
 						cm.dispose();
 					}	
 				}
 		} else if (cm.getPlayer().getMapId() == 920010000) {
 			if (status == 0) {
-				cm.sendYesNo("Gostaria de sair da Party Quest?\r\nVoce tera que comecar novamente na proxima vez...");
+				cm.sendYesNo("Would you like to leave the Party Quest?\r\nYou will have to start over next time...");
 			} else if (status == 1) {
 				var eim = cm.getChar().getEventInstance();
 				var party = cm.getChar().getEventInstance().getPlayers();

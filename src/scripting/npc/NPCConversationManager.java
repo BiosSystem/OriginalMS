@@ -1056,15 +1056,23 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
                     }
                 }
             }
-            final int mapid = c.getPlayer().getMap().getId() + 1;
+            final MapleMap lobbyMap = c.getPlayer().getMap();
+            final int mapid = lobbyMap.getId() + 1;
             TimerManager.getInstance().schedule(new Runnable() {
                 @Override
                 public void run() {
-                    MapleMap map;
-                    ChannelServer cs = c.getChannelServer();
-                    map = cs.getMapFactory().getMap(mapid);
-                    new MonsterCarnival(getPlayer().getParty(), challenger.getParty(), mapid);
-                    map.broadcastMessage(MaplePacketCreator.serverNotice(5, "Monster Carnival has begun!"));
+                    EventManager em = c.getChannelServer().getEventSM().getEventManager("MonsterCarnivalPQ");
+                    if (em != null) {
+                        em.setProperty("mapid", String.valueOf(mapid));
+                        scripting.event.EventInstanceManager eim = em.startInstance(getPlayer().getParty(), challenger.getParty(), lobbyMap);
+                        if (eim != null) {
+                            server.MonsterCarnival mc = new server.MonsterCarnival(getPlayer().getParty(), challenger.getParty(), mapid, eim);
+                            eim.setMonsterCarnival(mc);
+                        }
+                        c.getChannelServer().getMapFactory().getMap(mapid).broadcastMessage(MaplePacketCreator.serverNotice(5, "Monster Carnival has begun!"));
+                    } else {
+                        System.out.println("MonsterCarnivalPQ EventManager not found!");
+                    }
                 }
             }, 10000);
             mapMessage(5, "Monster Carnival will begin in 10 seconds!");
