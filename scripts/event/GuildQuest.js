@@ -68,7 +68,7 @@ function begin(eim) {
         var party = eim.getPlayers();
 		var iter = party.iterator();
                 while (iter.hasNext()) {
-                        iter.next().getClient().getSession().write(MaplePacketCreator.serverNotice(6,"[LeaderMS Quest] A quest foi iniciada!"));
+                        iter.next().getClient().getSession().write(MaplePacketCreator.serverNotice(6,"[Guild Quest] The quest has started!"));
 		}
 }
 
@@ -98,7 +98,7 @@ function playerDisconnected(eim, player) {
 		var iter = party.iterator();
                 while (iter.hasNext()) {
 			var pl = iter.next();
-                        pl.getClient().getSession().write(MaplePacketCreator.serverNotice(6,"[LeaderMS Quest] O lider do grupo foi desconectado, e os jogadores restantes serao levados para fora."));
+                        pl.getClient().getSession().write(MaplePacketCreator.serverNotice(6,"[Guild Quest] The party leader was disconnected, and the remaining players will be warped out."));
 			if (pl.equals(player)) {
 				removePlayer(eim, pl);
 			}			
@@ -112,7 +112,7 @@ function playerDisconnected(eim, player) {
 	else { 
 		removePlayer(eim, player);
                 if (party.size() < 6) { 
-                        end(eim,"[LeaderMS Quest] Ja nao ha jogadores suficientes para continuar, e o restante sera levado para fora.");
+                        end(eim,"[Guild Quest] There are no longer enough players to continue, and the rest will be warped out.");
                 }
 	}
 }
@@ -150,7 +150,7 @@ function playerExit(eim, player) {
 	player.changeMap(exitMap, exitMap.getPortal(0));
         var party = eim.getPlayers();
         if (party.size() < 6) { 
-                end(eim,"[LeaderMS Quest] Ja nao ha jogadores suficientes para continuar, e o restante sera levado para fora.");
+                end(eim,"[Guild Quest] There are no longer enough players to continue, and the rest will be warped out.");
         }
 }
 
@@ -208,7 +208,7 @@ function earringcheck(eim, player) {
 		var pl = iter.next();
                 if (pl.getHp() > 0 && pl.getMapId() > 990000200 && pl.getInventory(MapleInventoryType.EQUIPPED).countById(1032033) == 0) {
 			pl.addHP(-30000);
-			pl.getMap().broadcastMessage(MaplePacketCreator.serverNotice(6,"[LeaderMS Quest] " + pl.getName() + " morreu por nao estar usando os brincos!"));
+			pl.getMap().broadcastMessage(MaplePacketCreator.serverNotice(6,"[Guild Quest] " + pl.getName() + " died for not wearing the earrings!"));
                 }
         }
         eim.schedule("earringcheck", 15000);

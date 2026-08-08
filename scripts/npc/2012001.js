@@ -72,7 +72,7 @@ function action(mode, type, selection) {
 		cm.dispose();
 	} else {
 	if (status >= 0 && mode == 0) {
-		cm.sendNext("Voce deve ter algum negocio para cuidar aqui, certo?");
+		cm.sendNext("You must have some business to take care of here, right?");
 		cm.dispose();
 		return;
 	}
@@ -81,14 +81,14 @@ function action(mode, type, selection) {
 	else
 		status--;
 	if (status == 0) {
-		cm.sendYesNo("Me parece que ha muito espaco para esse passeio. Por favor, tenha o seu bilhete pronto para que eu possa deixa-lo entrar. A viagem pode ser longa, mas voce vai chegar ao seu destino muito bem. O que voce acha? Voce quer entrar nesta viagem?");
+		cm.sendYesNo("It seems there's plenty of room for this trip. Please have your ticket ready so I can let you in. The journey might be long, but you'll get to your destination safely. What do you think? Do you want to go on this trip?");
 	} else if (status == 1) {
 		if (cm.haveItem(4031047)) {
 			cm.gainItem(4031047, -1);
 			cm.warp(101000300, 0);
 			cm.dispose();
 		} else {
-			cm.sendNext("Certifique-se de que voce tem um bilhete de Ellinia para viajar neste barco.");
+			cm.sendNext("Make sure you have a ticket to Ellinia to travel on this boat.");
 			cm.dispose();
 			}		
 		}
