@@ -8,6 +8,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased] - Target: TBA
 
+## [3.2.0-v62] - 2026-08-08
+### Added
+- `docs/v62_FEATURE_AUDIT_REPORT.md` documenting the v62 feature parity audit, including Cygnus Knights, Aran, boss gates, and party quests.
+- Authentic GMS v62 Gachapon tables embedded within NPC logic scripts.
+
+### Fixed
+- Localized English dialogue strings in Party Quest NPC scripts that were originally in Portuguese:
+  - `9020000.js` (Kerning PQ Entry - Clott)
+  - `2040034.js` (Ludibrium PQ Entry - Red Sign)
+  - `2012001.js` (Orbis Boat Loader)
+  - `2013000.js` (Orbis PQ Entry - Wonky The Fairy)
+  - `GuildQuest.js` (Guild PQ Event Script)
+
 ## [3.1.0-v62] - 2026-07-24
 
 ### Fixed
