@@ -3,47 +3,95 @@
   <p><strong>MapleStory v62 Emulator • Dockerized for 2026 • BiosSystem Kernel</strong></p>
 </div>
 
-## Elevator Pitch
+<p align="center">
+  A modern, containerized approach to classic MapleStory (GMS 2008). Experience the nostalgic journey with enterprise-grade stability, automated deployment, and comprehensive bug fixes.
+</p>
 
-**OriginalMS** is a modern, Dockerized classic MapleStory v62 (GMS 2008) server emulator. It provides a complete, stable, and localized experience out of the box, with zero local environment setup required. Built around a microservices-inspired architecture, it brings classic nostalgia to a modern containerized workflow.
+## System Architecture
 
-## Features
+OriginalMS employs a microservices-inspired design running seamlessly on Docker Compose. This modularizes the game server into specialized, scalable components.
 
-- **Dockerized Stack**: Fully containerized environment with MySQL 5.7 and Java 8 server components orchestrated via Docker Compose.
-- **Complete Party Quests**: End-to-end functionality for Kerning, Ludibrium, Orbis, Monster Carnival, Amoria, and Pirate PQs.
-- **Modern Job Classes**: Support for Cygnus Knights and Aran with full packet decoding.
-- **Boss Mechanics**: Enforced server-side phase gates for Zakum, Horntail, and Papulatus.
-- **Authentic Gameplay**: Rebuilt Gachapon tables for all 12 locations and extensive English localization across the game.
-- **Secure**: Network isolation via Docker, exploit patching, and dupe bug fixes from base OdinMS.
+```mermaid
+flowchart TB
+    Client("Game Client<br/>(v62 localhost.exe)") <-->|TCP Port 8484| Login("Login Server<br/>(Authentication & World Selection)")
+    Client <-->|TCP Port 7575| Channel("Channel Server(s)<br/>(In-game Simulation & Combat)")
+    
+    subgraph Docker Network [Isolated Docker Bridge Network]
+        Login <--> World("World Server<br/>(Cross-channel Messaging)")
+        Channel <--> World
+        Login --> DB[("MySQL 5.7 Database<br/>(Accounts & Game State)")]
+        Channel --> DB
+        World --> DB
+    end
+    
+    DataFiles("WZ Data Files<br/>(Mounted Volume)") -.-> Login
+    DataFiles -.-> Channel
+```
 
-## Quick Start
+## Core Capabilities & Feature Matrix
 
-**1. Clone the repository:**
+OriginalMS provides a meticulously patched, localized, and complete GMS 2008 server emulation out of the box.
+
+### ⚔️ Game Mechanics & Content
+| Feature | Status | Details |
+|---------|--------|---------|
+| **Party Quests** | Complete | End-to-end functionality for Kerning City, Ludibrium, Orbis, Monster Carnival, Amoria, and Pirate PQs, enforcing level ranges and stage timers. |
+| **Boss Raids** | Complete | Multi-phase server-side scripting gates for Zakum, Horntail, and Papulatus to prevent exploits and enforce mechanics. |
+| **Job Classes** | Complete | Fully implemented classic jobs. Includes 5-byte packet decoding support for Cygnus Knights and Aran. |
+| **Gachapon** | Authentic | Rebuilt item drop tables for all 12 in-game Gachapon locations. |
+| **Localization** | Complete | Extensive English translation across all NPC event scripts (boat loaders, PQ entry NPCs). |
+
+### 🛠️ Backend Infrastructure
+| Feature | Status | Details |
+|---------|--------|---------|
+| **Containerization** | Complete | 100% Dockerized stack (`mysql:5.7`, Java 8 servers) running via Docker Compose. |
+| **Database Management** | Automated | SQL schemas automatically initialize from the `./SQL` directory on first startup. |
+| **Network Engine** | Optimized | Built around the Apache MINA network engine for highly concurrent I/O. |
+| **Scripting Engine** | Integrated | Rhino-based JavaScript processing for NPC dialogues, Portals, Quests, and Event Managers. |
+
+### 🔒 Security & Stability
+| Feature | Status | Details |
+|---------|--------|---------|
+| **Exploit Patching** | Complete | Base OdinMS dupe bugs and phase bypass vulnerabilities patched at the packet handler level. |
+| **Network Isolation** | Complete | Internal services communicate within an isolated Docker bridge network. Only Login/Channel ports exposed. |
+| **Secure Keystores** | Integrated | Java processes launched with standard SSL/Keystore parameters. |
+
+## Quick Start Guide
+
+Start your server in minutes without installing Java or MySQL locally.
+
+**1. Clone the repository**
 ```bash
 git clone --branch main https://github.com/BiosSystem/OriginalMS.git
 cd OriginalMS
 ```
 
-**2. Place WZ data files:**
-Copy your extracted WZ folder from a v62 client into the project root:
+**2. Place WZ data files**
+Copy your extracted WZ data folder from a v62 client into the project root:
 ```bash
 cp -r /path/to/your/wz ./wz
 ```
 
-**3. Build the server:**
+**3. Build the server**
+Compile the Java processes into executable JAR files:
 ```bash
 mvn clean package -DskipTests
 ```
 
-**4. Start the stack:**
+**4. Start the stack**
+Launch the database, world, login, and channel servers:
 ```bash
 docker compose up -d
 ```
-The server is ready when `Listening on port 8484` appears in the logs. Connect your v62 `localhost.exe` to `127.0.0.1:8484` and log in (default: `admin` / `admin`).
+*Wait until `Listening on port 8484` appears in your Docker logs. Connect your v62 `localhost.exe` to `127.0.0.1:8484` and log in (default: `admin` / `admin`).*
+
+---
 
 ## 📚 Technical Documentation
 
-For deep technical details, branch architecture, deployment configuration, and security information, please refer to the **[OriginalMS Technical Wiki](docs/WIKI.md)**.
+For deep technical details, source branching strategy, deployment configuration, and advanced security information, please refer to the prominent wiki:
+
+### 👉 **[Read the OriginalMS Technical Wiki](docs/WIKI.md)** 👈
 
 ---
 <div align="center">
