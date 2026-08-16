@@ -8,6 +8,32 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased] - Target: TBA
 
+### Added
+- `docs/ORIGINALMS_GAP_ANALYSIS.md`, a read-only v62 parity audit measured against the code rather
+  than against the previous documents. No Java, script or WZ data was changed.
+
+### Changed
+- Root `ORIGINALMS_GAP_ANALYSIS.md` is now a pointer to the new document. It was stale: five of its
+  six open items were already implemented, two of them carrying Critical and High severities while
+  the fix sat in the file the document named. Section 1 of the new document records what each item
+  resolved to, with the file and line.
+
+### Audit findings, no code changed
+- Phases A, B and C of `ORIGINALMS_V62_PLAN.md` measure as complete or substantially complete.
+  Phase D, localization, is the critical path to Oct 25: **111 files still carry Portuguese**,
+  including live Java handlers, while the README records localization as complete.
+- **Cygnus Knights (1000-1511) and Aran (2000-2112) are fully registered and are not GMS v62
+  content.** Cygnus shipped in v75. The project cannot claim authentic v62 parity and carry two
+  post-v62 class lines without saying which it means. Owner decision, recorded not reverted.
+- One genuine open defect: `MapleMap.java` schedules a separate `TimerManager` runnable per dropped
+  item at lines 1065, 1100, 1153, 1163 and 1167.
+- README overstates three rows: localization, and by implication job-class authenticity. Gachapon
+  at 12 locations and the Apache MINA network engine both verified accurate.
+- `classic` is fully merged and safe to delete. `OdinMS` holds 2 unmerged commits,
+  `audit/v62-feature-parity` holds 1 documentation-only commit. Six working copies of this
+  repository exist on disk; `OriginalMS_Backup` has 1361 dirty entries.
+
+
 ## [3.2.0-v62] - 2026-08-08
 ### Added
 - `docs/v62_FEATURE_AUDIT_REPORT.md` documenting the v62 feature parity audit, including Cygnus Knights, Aran, boss gates, and party quests.
