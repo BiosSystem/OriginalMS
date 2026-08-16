@@ -8,6 +8,40 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased] - Target: TBA
 
+### Fixed
+- **CI:** `.github/workflows/release_and_packages.yml` repaired. Both jobs were pinned to
+  `runs-on: ubuntu-22.04`, a GitHub-hosted image that has been retired. A job pinned to a withdrawn
+  label never gets a runner. Both now use `ubuntu-latest`; the compiler is still JDK 8 through
+  `setup-java`, so the host image does not constrain the build.
+- **CI:** Two actions ran on the Node 16 action runtime, which current runners refuse to execute:
+  `actions/setup-java@v3` and `softprops/action-gh-release@v1`, now v4 and v2. The `setup-java`
+  step sits inside "Compile Native Binaries & ZIP Drop-in", which is where the failure was reported.
+- **CI:** Removed the `FORCE_JAVASCRIPT_ACTIONS_TO_NODE24` environment variable. The runner does
+  not read it and it never had any effect; each action's runtime comes from its own `action.yml`.
+  Bumping the actions is the real fix, and leaving a placebo invites the next reader to trust it.
+- **CI:** The GHCR job probed for a Dockerfile and set a flag gating every step below it. With no
+  Dockerfile the job skipped everything and reported **success**, so a workflow named "Publish
+  GitHub Container Package" could publish nothing and still go green. A missing Dockerfile is now
+  an error.
+- **CI:** Added `docker/setup-buildx-action` before `build-push-action`, plus GHA layer caching.
+  Runner images ship buildx, but depending on a preinstalled tool makes the job depend on image
+  contents rather than on anything the workflow declares. `build-push-action` v5 to v6,
+  `actions/checkout` v4 to v5.
+- **CI:** Tightened permissions. `contents: write` and `packages: write` had been granted to every
+  job at the top level. The top level is now `contents: read`, the Maven job adds `contents: write`
+  for the release upload, and the GHCR job adds `packages: write`.
+- **CI:** The ZIP step ended every copy with `|| true` and zipped whatever survived. If the build
+  layout ever changed, every copy would fail silently and the step would either ship an empty
+  archive or die on zip's own "nothing to do" with no explanation. `target/dist`, `target/lib`,
+  `configs` and `scripts` are now required and fail loudly with a `::error::` annotation;
+  `launch_*.sh` stays optional and says so. `mvn` gained `-B` and `-DskipTests`, the latter because
+  this repository has no `src/test`.
+- **CI:** Verified by parsing the workflow, running `bash -n` over all three shell blocks, and
+  executing the packaging script against two layouts: missing build output exits 1 with the error
+  annotation, and a complete layout populates `release-pkg` correctly. The `zip` call, the Maven
+  build and the container build were NOT verified locally, because `zip`, `mvn`, `java` and
+  `docker` are all absent from this workstation.
+
 ### Added
 - `docs/ORIGINALMS_GAP_ANALYSIS.md`, a read-only v62 parity audit measured against the code rather
   than against the previous documents. No Java, script or WZ data was changed.

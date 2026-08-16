@@ -6,78 +6,132 @@ on:
       - 'v*'
   workflow_dispatch:
 
+# Least privilege at the top, widened per job. The old file granted
+# contents: write and packages: write to every job, so the Maven job could have
+# pushed packages and the container job could have written the repository.
 permissions:
-  contents: write
-  packages: write
+  contents: read
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+# FORCE_JAVASCRIPT_ACTIONS_TO_NODE24 was set here and does nothing. It is not a
+# variable the runner reads; the action runtime is chosen by each action's
+# own action.yml. Bumping the actions below is the actual fix.
 
 jobs:
   publish-releases:
     name: Compile Native Binaries & ZIP Drop-in
-    runs-on: ubuntu-22.04
+    # ubuntu-22.04 was retired as a GitHub-hosted image. A job pinned to a
+    # withdrawn label never gets a runner. ubuntu-latest moves with the fleet,
+    # and the compiler is JDK 8 via setup-java, so the host image does not
+    # constrain the build.
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
+      # setup-java v3 runs on the Node 16 action runtime, which current runners
+      # refuse to execute. That failure lands on this step, inside this job,
+      # which is where the reported failure appeared. v4 runs on Node 20.
       - name: Setup Java 8
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: '8'
           distribution: 'temurin'
           cache: 'maven'
 
+      # -B for non-interactive log output. -DskipTests because this repository
+      # has no src/test, so surefire only costs time.
       - name: Compile Native Binaries (Maven)
-        run: mvn clean package
+        run: mvn -B clean package -DskipTests
 
+      # pom.xml binds maven-jar-plugin to target/dist and binds the dependency
+      # plugin's copy-dependencies goal to prepare-package writing target/lib,
+      # so both directories exist after a successful package.
+      #
+      # The previous version ended every copy with "|| true" and zipped
+      # whatever survived. If the build layout ever changed, every copy would
+      # fail silently and this step would either ship an empty archive or die
+      # on zip's own "nothing to do" with no explanation. Required paths now
+      # fail loudly; genuinely optional ones stay optional and say so.
       - name: Package ZIP Drop-in
         run: |
+          set -euo pipefail
           mkdir -p release-pkg
-          # Ignore failures if directories don't exist (e.g., target/dist)
-          cp -r target/dist/* release-pkg/ || true
-          cp -r target/lib release-pkg/ || true
-          cp launch_*.sh release-pkg/ || true
-          cp -r configs release-pkg/ || true
-          cp -r scripts release-pkg/ || true
+
+          for required in target/dist target/lib configs scripts; do
+            if [ ! -d "$required" ]; then
+              echo "::error::$required is missing. The build layout changed or mvn package did not produce it."
+              exit 1
+            fi
+          done
+
+          cp -r target/dist/* release-pkg/
+          cp -r target/lib release-pkg/
+          cp -r configs release-pkg/
+          cp -r scripts release-pkg/
+
+          # Launch scripts are a convenience, not a build output.
+          cp launch_*.sh release-pkg/ 2>/dev/null || echo "no launch_*.sh at repository root, continuing"
+
+          if [ -z "$(ls -A release-pkg)" ]; then
+            echo "::error::release-pkg is empty, refusing to publish an empty archive."
+            exit 1
+          fi
+
           cd release-pkg
-          zip -r ../OriginalMS-${{ github.ref_name }}.zip .
+          zip -r "../OriginalMS-${{ github.ref_name }}.zip" .
 
       - name: Upload Release Artifact
-        uses: softprops/action-gh-release@v1
+        # v1 is a Node 16 action. v2 runs on Node 20.
+        uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/v')
         with:
           files: OriginalMS-${{ github.ref_name }}.zip
 
   publish-docker:
     name: Publish GitHub Container Package (GHCR)
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     needs: publish-releases
+    permissions:
+      contents: read
+      packages: write
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
-      - name: Check for Dockerfile
-        id: check_docker
+      # The old version probed for a Dockerfile and set a flag that gated every
+      # step below it. With no Dockerfile the job skipped everything and
+      # reported SUCCESS, so a workflow named "Publish GitHub Container
+      # Package" could publish nothing and still go green. The Dockerfile is
+      # required here, so its absence is an error rather than a quiet skip.
+      - name: Require a Dockerfile
         run: |
-          if [ -f Dockerfile ]; then
-            echo "has_docker=true" >> $GITHUB_OUTPUT
-          else
-            echo "has_docker=false" >> $GITHUB_OUTPUT
+          if [ ! -f Dockerfile ]; then
+            echo "::error::No Dockerfile at the repository root. This job exists to publish a container image."
+            exit 1
           fi
 
+      # build-push-action drives buildx. Runner images ship it, but relying on
+      # a preinstalled tool makes this job depend on image contents rather than
+      # on anything declared here.
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       - name: Log in to GitHub Container Registry
-        if: steps.check_docker.outputs.has_docker == 'true'
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      # The image path is lowercase literal on purpose: GHCR rejects uppercase
+      # repository names, and github.repository_owner is "BiosSystem".
       - name: Build and push Docker image
-        if: steps.check_docker.outputs.has_docker == 'true'
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           context: .
           push: true
           tags: ghcr.io/biossystem/originalms:latest,ghcr.io/biossystem/originalms:${{ github.ref_name }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
