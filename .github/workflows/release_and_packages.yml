@@ -1,4 +1,4 @@
-name: Publish Releases & Packages
+﻿name: Publish Releases & Packages
 
 on:
   push:
@@ -28,13 +28,13 @@ jobs:
       contents: write
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       # setup-java v3 runs on the Node 16 action runtime, which current runners
       # refuse to execute. That failure lands on this step, inside this job,
       # which is where the reported failure appeared. v4 runs on Node 20.
       - name: Setup Java 8
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           java-version: '8'
           distribution: 'temurin'
@@ -84,7 +84,7 @@ jobs:
 
       - name: Upload Release Artifact
         # v1 is a Node 16 action. v2 runs on Node 20.
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         if: startsWith(github.ref, 'refs/tags/v')
         with:
           files: OriginalMS-${{ github.ref_name }}.zip
@@ -98,7 +98,7 @@ jobs:
       packages: write
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v7
 
       # The old version probed for a Dockerfile and set a flag that gated every
       # step below it. With no Dockerfile the job skipped everything and
@@ -116,10 +116,10 @@ jobs:
       # a preinstalled tool makes this job depend on image contents rather than
       # on anything declared here.
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@v4
 
       - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -128,10 +128,11 @@ jobs:
       # The image path is lowercase literal on purpose: GHCR rejects uppercase
       # repository names, and github.repository_owner is "BiosSystem".
       - name: Build and push Docker image
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@v7
         with:
           context: .
           push: true
           tags: ghcr.io/biossystem/originalms:latest,ghcr.io/biossystem/originalms:${{ github.ref_name }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+

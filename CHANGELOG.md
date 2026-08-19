@@ -1,3 +1,8 @@
+## [2026-08-19]
+
+- Fix GitHub Actions workflows for GHCR publishing and binary compilation
+- Bump action versions to support Node 24 runtime
+
 # Changelog
 
 All notable changes to BiosMS are documented in this file.
@@ -142,3 +147,4 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Misc: Pets (auto-pot, loot, chat, food), Mounts, VIP teleport rocks, Maple TV, Silver Box.
 - World rankings computed every 30 minutes by `RankingWorker` (overall + per-job-class).
 - MySQL 5.7 schema with 76 tables; Tomcat JDBC connection pool.
+
