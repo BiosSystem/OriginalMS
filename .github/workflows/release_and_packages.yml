@@ -127,14 +127,21 @@ jobs:
 
       # The image path is lowercase literal on purpose: GHCR rejects uppercase
       # repository names, and github.repository_owner is "BiosSystem".
+            - name: Sanitize image tag
+        id: sanitize
+        run: |
+          REF_NAME="${{ github.ref_name }}"
+          echo "safe_tag=${REF_NAME//\//-}" >> $GITHUB_OUTPUT
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v7
         with:
           context: .
           push: true
-          tags: ghcr.io/biossystem/originalms:latest,ghcr.io/biossystem/originalms:${{ github.ref_name }}
+          tags: ghcr.io/biossystem/originalms:latest,ghcr.io/biossystem/originalms:${{ steps.sanitize.outputs.safe_tag }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
 
 
 
