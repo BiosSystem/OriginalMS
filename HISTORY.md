@@ -1,3 +1,8 @@
+## [2026-08-21] - Pet Loot & Pirate Charge Patch
+
+- Removed restrictive pet loot inventory slot checks in PetLootHandler.java and added explicit 1812001 (Item Pouch) and 1812000 (Meso Magnet) global equip verification.
+- Added Pirate Corkscrew Blow (5101004) charge duration bindings to the actual server-side damage calculation formula in CloseRangeDamageHandler.java.
+
 ## [2026-08-21] - Trade & Storage Security Patch
 
 - Hardened MapleTrade.java with synchronized methods to prevent concurrent item duping.
@@ -131,6 +136,7 @@ Conducted a full read-only audit of the `main` branch against GMS v62 (Pirate cl
 - Dockerized deployment stack (docker-compose, multi-stage Dockerfile).
 - Added CPQ2, CWKPQ, Mu Lung Dojo, Maker Skill handler, Party Search handlers, Steal drop mechanic.
 - History scrub: stripped AI signatures and conventional commit prefixes from git history (2026 audit).
+
 
 
 

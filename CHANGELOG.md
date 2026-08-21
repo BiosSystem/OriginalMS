@@ -1,3 +1,8 @@
+## [2026-08-21] - Pet Loot & Pirate Charge Patch
+
+- Removed restrictive pet loot inventory slot checks in PetLootHandler.java and added explicit 1812001 (Item Pouch) and 1812000 (Meso Magnet) global equip verification.
+- Added Pirate Corkscrew Blow (5101004) charge duration bindings to the actual server-side damage calculation formula in CloseRangeDamageHandler.java.
+
 ## [2026-08-21] - Trade & Storage Security Patch
 
 - Hardened MapleTrade.java with synchronized methods to prevent concurrent item duping.
@@ -168,6 +173,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Misc: Pets (auto-pot, loot, chat, food), Mounts, VIP teleport rocks, Maple TV, Silver Box.
 - World rankings computed every 30 minutes by `RankingWorker` (overall + per-job-class).
 - MySQL 5.7 schema with 76 tables; Tomcat JDBC connection pool.
+
 
 
 
