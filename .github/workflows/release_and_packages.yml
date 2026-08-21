@@ -80,7 +80,9 @@ jobs:
           fi
 
           cd release-pkg
-          zip -r "../OriginalMS-$(( '${{ github.ref_name }}' ).replace('/', '-')).zip" .
+          REF_NAME="${{ github.ref_name }}"
+          SAFE_REF_NAME="${REF_NAME//\//-}"
+          zip -r "../OriginalMS-${SAFE_REF_NAME}.zip" .
 
       - name: Upload Release Artifact
         # v1 is a Node 16 action. v2 runs on Node 20.
@@ -127,7 +129,7 @@ jobs:
 
       # The image path is lowercase literal on purpose: GHCR rejects uppercase
       # repository names, and github.repository_owner is "BiosSystem".
-            - name: Sanitize image tag
+      - name: Sanitize image tag
         id: sanitize
         run: |
           REF_NAME="${{ github.ref_name }}"
@@ -141,6 +143,7 @@ jobs:
           tags: ghcr.io/biossystem/originalms:latest,ghcr.io/biossystem/originalms:${{ steps.sanitize.outputs.safe_tag }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
 
 
 
