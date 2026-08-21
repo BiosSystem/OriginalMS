@@ -119,6 +119,8 @@ public class CloseRangeDamageHandler extends AbstractDealDamageHandler {
         maxdamage = Math.min(maxdamage, 99999);
         if (skillId == 4211006) {
             maxdamage = 700000;
+        } else if (skillId == 5101004) {
+            maxdamage = (int) (maxdamage * Math.max(1.0, attack.charge / 1000.0));
         } else if (numFinisherOrbs > 0) {
             maxdamage *= numFinisherOrbs;
         } else if (comboBuff != null) {
@@ -134,3 +136,4 @@ public class CloseRangeDamageHandler extends AbstractDealDamageHandler {
         applyAttack(attack, player, maxdamage, attackCount);
     }
 }
+

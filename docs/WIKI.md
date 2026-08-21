@@ -1,71 +1,46 @@
-# OriginalMS Technical Documentation
+# OriginalMS Technical Wiki
 
-Welcome to the comprehensive technical documentation for OriginalMS, a modern, Dockerized classic MapleStory v62 (GMS 2008) server emulator.
+## 1. Architecture
+OriginalMS is a modern, Dockerized classic MapleStory v62 emulator utilizing a 3-branch source strategy and a microservices-inspired game server architecture.
 
-## 🏗️ Architecture Overview
+### Branch Structure
+The repository strictly manages three architectural branches:
+- **`main`**: The production-ready Dockerized deployment stack (`v3.0.0-v62`).
+- **`classic`**: The standalone emulator structure with all Party Quest fixes, boss phase gates, Cygnus/Aran jobs, Gachapon rebuild, and English localization applied.
+- **`OdinMS`**: The raw unmodified v62 base upstream source (`v1.0.0-base`).
 
-The OriginalMS architecture is separated into a server-side emulator stack and a game client. 
+### System Components
+The system is divided into three primary tiers:
+1. **Docker Compose Stack**
+   - **Database (`mysql:5.7`)**: Stores all game state, accounts, and server schemas.
+   - **Game Server (Java 8)**: Built around the Apache MINA network engine, managing network I/O to game clients. The application is divided logically into:
+     - **Login Server**: Handles initial client connections, authentication, and world selection on port 8484.
+     - **World Server**: Manages cross-channel messaging and server-wide states.
+     - **Channel Server(s)**: Handles the in-game simulation, map logic, combat, and player interactions (e.g., port 7575).
+     - **Scripting Engine**: Processes JavaScript for NPC dialogues, Portals, Quests, and Event Managers.
+2. **Game Client (External)**: A v62 patched `localhost.exe` connecting over TCP.
+3. **Data Files (External)**: `wz/` data files extracted from a v62 client are mounted into the server containers.
 
-### Server Stack
-- **Game Server Engine:** Java 8 (J2SE)
-- **Network Engine:** Apache MINA. Handles high-concurrency TCP/IP connections from the game client.
-- **Database:** MySQL / MariaDB. Maintains player data, inventory, quests, and game state.
-- **Scripting:** JavaScript. Handles NPC dialogs, portal transitions, and quest logic dynamically without needing recompilation.
+## 2. Features
+The codebase has been heavily modernized to ensure a complete and stable v62 GMS 2008 experience.
+- **Party Quests (PQs)**: End-to-end functionality for Kerning City (KPQ), Ludibrium (LPQ), Orbis (OPQ), Monster Carnival (CPQ), Amoria (APQ), and Pirate PQ. Event managers enforce level ranges, stage timers, and phase transitions.
+- **Modern Job Classes**: Enums and 5-byte packet decoding support for Cygnus Knights (Noblesse, Dawn Warrior, Blaze Wizard, Wind Archer, Night Walker, Thunder Breaker) and Aran.
+- **Boss Mechanics**: Multi-phase server-side scripting gates for Zakum, Horntail, and Papulatus to prevent exploits and enforce party mechanics.
+- **Authentic Gachapon**: Rebuilt item drop tables for all 12 in-game Gachapon locations.
+- **Localization**: Extensive English translation across all NPC event scripts (such as boat loaders and PQ entry NPCs) ensuring complete UI parity.
 
-### Sub-Servers
-1. **Login Server:** Handles client authentication over TCP Port 8484. Routes authenticated clients to appropriate Channel Servers.
-2. **Channel Server(s):** Manages the in-game world instances, player movement, combat, dropping items, and map events.
-3. **Shop Server:** Dedicated sub-server for Cash Shop and trade logic.
+## 3. Deployment
+Deployment targets a fully containerized environment using Docker Compose for simple orchestration.
+- **Build Process**: The Java codebase is compiled using Maven (`mvn clean package -DskipTests`) generating a `.jar` in `dist/` or `target/`.
+- **Containers**:
+  - `biosms-db`: Runs MySQL 5.7, initializing SQL schemas automatically from the `./SQL` directory on first startup. Volume mounted to persist data.
+  - `biosms-world`: Runs the World server process. Connects to `biosms-db`.
+  - `biosms-login`: Exposes port 8484 to clients. Dependent on the World and DB containers.
+  - `biosms-channel1`: Exposes port 7575 for in-game connections.
+- **Configuration**: Properties are injected via JVM arguments (e.g., `-Drecvops=recvops.properties`) and environment variables (`DB_URL`). The WZ data is mounted dynamically via `volumes: - ./wz:/app/wz`.
 
-### Deployment Environment
-- **Containerization:** The application is packaged using Docker and orchestrated with Docker Compose to provide a zero-setup local deployment.
-- **Build System:** Maven is used to compile the Java server to a standalone JAR.
-
-## ✨ Features
-
-- **Party Quests (PQs):** End-to-end functionality for Kerning PQ, Ludibrium PQ, Orbis PQ, and more.
-- **Classes:** Fully functional Cygnus Knights and Aran class progression.
-- **Bosses:** Corrected boss spawn timers, HP, and drop tables.
-- **Localization:** 100% English translated NPC dialogue, user interface, and quests.
-- **Stability:** Heavily patched to resolve exploits, dupe bugs, and stability issues present in the upstream OdinMS source.
-
-## 🚀 Deployment Guide
-
-OriginalMS supports both Docker and bare-metal deployments.
-
-### Prerequisites
-1. **WZ Data Files:** Extracted from a v62 MapleStory client.
-2. **Game Client:** A v62 patched `localhost.exe`.
-
-### Docker Deployment (Recommended)
-
-1. **Clone the repository:**
-   ```bash
-   git clone --branch main https://github.com/BiosSystem/OriginalMS.git
-   cd OriginalMS
-   ```
-2. **Place WZ Data:** Copy your `wz/` folder into the project root.
-3. **Build the JAR:**
-   ```bash
-   mvn clean package -DskipTests
-   ```
-4. **Launch Docker Compose:**
-   ```bash
-   docker compose up -d
-   ```
-   *Note: Wait until the logs output `Listening on port 8484` before connecting.*
-
-### Classic Deployment (Bare-metal)
-If you prefer running without Docker, check out the `classic` branch:
-1. Load the database schema manually: `mysql -u root -p < sql/install.sql`
-2. Configure `launch/config.properties` with your database credentials.
-3. Build using Maven and run the resulting `target/OriginalMS.jar`.
-
-## 🔒 Security
-
-- **Patching:** Major exploitation methods and item duplication bugs present in early emulator sources have been patched.
-- **Network Validation:** Incoming packets through Apache MINA are strictly validated to prevent malformed packet crashes.
-- **Authentication:** Standard PIN and PIC implementations are enforced during login flow.
-
----
-*Maintained by the BiosSystem team.*
+## 4. Security
+- **Network Isolation**: All server components communicate within an isolated Docker bridge network (`biosms-network`). Only the Login (8484) and Channel (7575) ports are exposed publicly.
+- **Database**: The `db` container uses environment variable injection for root passwords. Port 3306 is exposed for management but can be firewalled or restricted in a live environment.
+- **SSL / Keystores**: The Java processes are launched with `javax.net.ssl.keyStore` and `trustStore` parameters, enforcing standard security for applicable network handlers.
+- **Exploit Patching**: Base OdinMS dupe bugs and phase bypass vulnerabilities have been explicitly patched at the packet handler and event script levels.

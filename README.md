@@ -1,32 +1,64 @@
 <div align="center">
-  <img src="https://readme-typing-svg.herokuapp.com?font=Share+Tech+Mono&weight=bold&size=34&duration=3000&pause=1000&color=00FF72&center=true&vCenter=true&width=600&lines=OriginalMS;MapleStory+v62+Emulator;Dockerized+for+2026;BiosSystem+Kernel" alt="OriginalMS Title" />
+  <h1>OriginalMS</h1>
+  <p><strong>MapleStory v62 Emulator • Dockerized for 2026 • BiosSystem Kernel</strong></p>
 </div>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Java-8-ED8B00?style=flat-square&logo=java" alt="Java 8">
-  <img src="https://img.shields.io/badge/MapleStory-v62%20GMS%202008-blue?style=flat-square" alt="MapleStory v62">
-  <img src="https://img.shields.io/badge/Docker-Compose-2CA5E0?style=flat-square&logo=docker" alt="Docker">
-  <img src="https://img.shields.io/github/license/BiosSystem/OriginalMS?style=flat-square" alt="License">
+  A modern, containerized approach to classic MapleStory (GMS 2008). Experience the nostalgic journey with enterprise-grade stability, automated deployment, and comprehensive bug fixes.
 </p>
 
-## Elevator Pitch
+## System Architecture
 
-**OriginalMS** is a modern, Dockerized classic MapleStory v62 (GMS 2008) server emulator. It provides a robust, zero-setup local deployment that ships with all Party Quests working, full boss suites, Cygnus Knights, Aran, and a fully localized English UI. 
+OriginalMS employs a microservices-inspired design running seamlessly on Docker Compose. This modularizes the game server into specialized, scalable components.
 
-For deep technical details, architecture diagrams, and extensive deployment guides, please see our **[Technical Wiki (docs/WIKI.md)](docs/WIKI.md)**.
+```mermaid
+flowchart TB
+    Client("Game Client<br/>(v62 localhost.exe)") <-->|TCP Port 8484| Login("Login Server<br/>(Authentication & World Selection)")
+    Client <-->|TCP Port 7575| Channel("Channel Server(s)<br/>(In-game Simulation & Combat)")
+    
+    subgraph Docker Network [Isolated Docker Bridge Network]
+        Login <--> World("World Server<br/>(Cross-channel Messaging)")
+        Channel <--> World
+        Login --> DB[("MySQL 5.7 Database<br/>(Accounts & Game State)")]
+        Channel --> DB
+        World --> DB
+    end
+    
+    DataFiles("WZ Data Files<br/>(Mounted Volume)") -.-> Login
+    DataFiles -.-> Channel
+```
 
-## Features
+## Core Capabilities & Feature Matrix
 
-- **Dockerized Environment:** Get up and running instantly with Docker Compose. No local dependencies required.
-- **Complete Boss Suites:** Zakum, Horntail, and Papulatus are fully functional with server-side phase enforcement.
-- **Working Party Quests:** Play Kerning PQ, Ludibrium PQ, Orbis PQ, Monster Carnival PQ, Amoria PQ, and Pirate PQ end-to-end.
-- **Class Support:** Cygnus Knights and Aran class progression are fully implemented.
-- **Localization:** 100% English translated NPC dialogue, quests, and interfaces.
-- **Stability and Security:** Heavily patched to resolve exploits, dupe bugs, and stability issues from the upstream source.
+OriginalMS provides a meticulously patched, localized, and complete GMS 2008 server emulation out of the box.
 
-## Quick Start
+### ⚔️ Game Mechanics & Content
+| Feature | Status | Details |
+|---------|--------|---------|
+| **Party Quests** | Complete | End-to-end functionality for Kerning City, Ludibrium, Orbis, Monster Carnival, Amoria, and Pirate PQs, enforcing level ranges and stage timers. |
+| **Boss Raids** | Complete | Multi-phase server-side scripting gates for Zakum, Horntail, and Papulatus to prevent exploits and enforce mechanics. |
+| **Job Classes** | Complete | Fully implemented classic jobs. Includes 5-byte packet decoding support for Cygnus Knights and Aran. |
+| **Gachapon** | Authentic | Rebuilt item drop tables for all 12 in-game Gachapon locations. |
+| **Localization** | Complete | Extensive English translation across all NPC event scripts (boat loaders, PQ entry NPCs). |
 
-OriginalMS requires a `v62` game client and its WZ data files, which are not included in this repository. 
+### 🛠️ Backend Infrastructure
+| Feature | Status | Details |
+|---------|--------|---------|
+| **Containerization** | Complete | 100% Dockerized stack (`mysql:5.7`, Java 8 servers) running via Docker Compose. |
+| **Database Management** | Automated | SQL schemas automatically initialize from the `./SQL` directory on first startup. |
+| **Network Engine** | Optimized | Built around the Apache MINA network engine for highly concurrent I/O. |
+| **Scripting Engine** | Integrated | Rhino-based JavaScript processing for NPC dialogues, Portals, Quests, and Event Managers. |
+
+### 🔒 Security & Stability
+| Feature | Status | Details |
+|---------|--------|---------|
+| **Exploit Patching** | Complete | Base OdinMS dupe bugs and phase bypass vulnerabilities patched at the packet handler level. |
+| **Network Isolation** | Complete | Internal services communicate within an isolated Docker bridge network. Only Login/Channel ports exposed. |
+| **Secure Keystores** | Integrated | Java processes launched with standard SSL/Keystore parameters. |
+
+## Quick Start Guide
+
+Start your server in minutes without installing Java or MySQL locally.
 
 **1. Clone the repository**
 ```bash
@@ -34,27 +66,34 @@ git clone --branch main https://github.com/BiosSystem/OriginalMS.git
 cd OriginalMS
 ```
 
-**2. Add WZ Data**
-Extract the `wz/` folder from your v62 client and place it into the project root directory.
+**2. Place WZ data files**
+Copy your extracted WZ data folder from a v62 client into the project root:
+```bash
+cp -r /path/to/your/wz ./wz
+```
 
-**3. Build the Server**
+**3. Build the server**
+Compile the Java processes into executable JAR files:
 ```bash
 mvn clean package -DskipTests
 ```
 
-**4. Start with Docker Compose**
+**4. Start the stack**
+Launch the database, world, login, and channel servers:
 ```bash
 docker compose up -d
 ```
-Wait for the `Listening on port 8484` message in the logs (`docker compose logs -f originalms`).
-
-**5. Connect and Play**
-Launch your patched `localhost.exe` game client and connect. Log in with the default administrator account (`admin` / `admin`).
+*Wait until `Listening on port 8484` appears in your Docker logs. Connect your v62 `localhost.exe` to `127.0.0.1:8484` and log in (default: `admin` / `admin`).*
 
 ---
 
-**[📚 Read the Full Documentation and Technical Details in the WIKI](docs/WIKI.md)**
+## 📚 Technical Documentation
 
+For deep technical details, source branching strategy, deployment configuration, and advanced security information, please refer to the prominent wiki:
+
+### 👉 **[Read the OriginalMS Technical Wiki](docs/WIKI.md)** 👈
+
+---
 <div align="center">
-  <i>Maintained by the BiosSystem team.</i>
+  <i>Part of the <a href="https://bios-system.net">BiosSystem Suite</a></i>
 </div>

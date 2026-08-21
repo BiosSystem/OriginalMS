@@ -1,3 +1,34 @@
+## [2026-08-21] - Pet Loot & Pirate Charge Patch
+
+- Removed restrictive pet loot inventory slot checks in PetLootHandler.java and added explicit 1812001 (Item Pouch) and 1812000 (Meso Magnet) global equip verification.
+- Added Pirate Corkscrew Blow (5101004) charge duration bindings to the actual server-side damage calculation formula in CloseRangeDamageHandler.java.
+
+## [2026-08-21] - Trade & Storage Security Patch
+
+- Hardened MapleTrade.java with synchronized methods to prevent concurrent item duping.
+- Synchronized ItemMoveHandler.java packet execution to prevent inventory races.
+- Validated StorageHandler.java negative meso overflow autoban.
+- CI/CD Run ID: 32518790368 (Successfully published GHCR and compiled binaries).
+
+## [2026-08-21] - Live Verification
+
+- OriginalMS CI/CD workflow confirmed green (Run ID: 32515341744)
+- AuraTorrent CI/CD workflow confirmed green (Run ID: 32515049384)
+
+## [2026-08-20 - Platform handoff audit]
+
+- Confirm remote release workflow commit `f108d1a` completed successfully on GitHub.
+- Confirm local `fix/cicd-release-workflows` is one commit ahead of its remote branch and has no
+  open pull request.
+- Verify every action major tag referenced by local commit `7eb2c02` exists. Keep that commit
+  classified as locally validated but not remotely exercised.
+- Keep v62 authenticity wording, Phase D localization, and per-drop TimerManager aggregation open.
+
+## [2026-08-19]
+
+- Fix GitHub Actions workflows for GHCR publishing and binary compilation
+- Bump action versions to support Node 24 runtime
+
 # Changelog
 
 All notable changes to BiosMS are documented in this file.
@@ -7,6 +38,66 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ---
 
 ## [Unreleased] - Target: TBA
+
+### Fixed
+- **CI:** `.github/workflows/release_and_packages.yml` repaired. Both jobs were pinned to
+  `runs-on: ubuntu-22.04`, a GitHub-hosted image that has been retired. A job pinned to a withdrawn
+  label never gets a runner. Both now use `ubuntu-latest`; the compiler is still JDK 8 through
+  `setup-java`, so the host image does not constrain the build.
+- **CI:** Two actions ran on the Node 16 action runtime, which current runners refuse to execute:
+  `actions/setup-java@v3` and `softprops/action-gh-release@v1`, now v4 and v2. The `setup-java`
+  step sits inside "Compile Native Binaries & ZIP Drop-in", which is where the failure was reported.
+- **CI:** Removed the `FORCE_JAVASCRIPT_ACTIONS_TO_NODE24` environment variable. The runner does
+  not read it and it never had any effect; each action's runtime comes from its own `action.yml`.
+  Bumping the actions is the real fix, and leaving a placebo invites the next reader to trust it.
+- **CI:** The GHCR job probed for a Dockerfile and set a flag gating every step below it. With no
+  Dockerfile the job skipped everything and reported **success**, so a workflow named "Publish
+  GitHub Container Package" could publish nothing and still go green. A missing Dockerfile is now
+  an error.
+- **CI:** Added `docker/setup-buildx-action` before `build-push-action`, plus GHA layer caching.
+  Runner images ship buildx, but depending on a preinstalled tool makes the job depend on image
+  contents rather than on anything the workflow declares. `build-push-action` v5 to v6,
+  `actions/checkout` v4 to v5.
+- **CI:** Tightened permissions. `contents: write` and `packages: write` had been granted to every
+  job at the top level. The top level is now `contents: read`, the Maven job adds `contents: write`
+  for the release upload, and the GHCR job adds `packages: write`.
+- **CI:** The ZIP step ended every copy with `|| true` and zipped whatever survived. If the build
+  layout ever changed, every copy would fail silently and the step would either ship an empty
+  archive or die on zip's own "nothing to do" with no explanation. `target/dist`, `target/lib`,
+  `configs` and `scripts` are now required and fail loudly with a `::error::` annotation;
+  `launch_*.sh` stays optional and says so. `mvn` gained `-B` and `-DskipTests`, the latter because
+  this repository has no `src/test`.
+- **CI:** Verified by parsing the workflow, running `bash -n` over all three shell blocks, and
+  executing the packaging script against two layouts: missing build output exits 1 with the error
+  annotation, and a complete layout populates `release-pkg` correctly. The `zip` call, the Maven
+  build and the container build were NOT verified locally, because `zip`, `mvn`, `java` and
+  `docker` are all absent from this workstation.
+
+### Added
+- `docs/ORIGINALMS_GAP_ANALYSIS.md`, a read-only v62 parity audit measured against the code rather
+  than against the previous documents. No Java, script or WZ data was changed.
+
+### Changed
+- Root `ORIGINALMS_GAP_ANALYSIS.md` is now a pointer to the new document. It was stale: five of its
+  six open items were already implemented, two of them carrying Critical and High severities while
+  the fix sat in the file the document named. Section 1 of the new document records what each item
+  resolved to, with the file and line.
+
+### Audit findings, no code changed
+- Phases A, B and C of `ORIGINALMS_V62_PLAN.md` measure as complete or substantially complete.
+  Phase D, localization, is the critical path to Oct 25: **111 files still carry Portuguese**,
+  including live Java handlers, while the README records localization as complete.
+- **Cygnus Knights (1000-1511) and Aran (2000-2112) are fully registered and are not GMS v62
+  content.** Cygnus shipped in v75. The project cannot claim authentic v62 parity and carry two
+  post-v62 class lines without saying which it means. Owner decision, recorded not reverted.
+- One genuine open defect: `MapleMap.java` schedules a separate `TimerManager` runnable per dropped
+  item at lines 1065, 1100, 1153, 1163 and 1167.
+- README overstates three rows: localization, and by implication job-class authenticity. Gachapon
+  at 12 locations and the Apache MINA network engine both verified accurate.
+- `classic` is fully merged and safe to delete. `OdinMS` holds 2 unmerged commits,
+  `audit/v62-feature-parity` holds 1 documentation-only commit. Six working copies of this
+  repository exist on disk; `OriginalMS_Backup` has 1361 dirty entries.
+
 
 ## [3.2.0-v62] - 2026-08-08
 ### Added
@@ -82,3 +173,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Misc: Pets (auto-pot, loot, chat, food), Mounts, VIP teleport rocks, Maple TV, Silver Box.
 - World rankings computed every 30 minutes by `RankingWorker` (overall + per-job-class).
 - MySQL 5.7 schema with 76 tables; Tomcat JDBC connection pool.
+
+
+
+
+

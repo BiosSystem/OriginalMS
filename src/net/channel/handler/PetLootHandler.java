@@ -94,7 +94,7 @@ public class PetLootHandler extends AbstractMaplePacketHandler {
                 if (mapitem.getMeso() > 0) {
                     boolean hasMesoMagnet = false;
                     for (client.IItem item : c.getPlayer().getInventory(MapleInventoryType.EQUIPPED).list()) {
-                        if (item.getItemId() == 1812000 && item.getPosition() <= -114) { // Dynamic Pet Equip slot
+                        if (item.getItemId() == 1812000 ) {
                             hasMesoMagnet = true;
                             break;
                         }
@@ -113,7 +113,7 @@ public class PetLootHandler extends AbstractMaplePacketHandler {
                 } else {
                     boolean hasItemPouch = false;
                     for (client.IItem item : c.getPlayer().getInventory(MapleInventoryType.EQUIPPED).list()) {
-                        if (item.getItemId() == 1812001 && item.getPosition() <= -114) { // Dynamic Pet Equip slot
+                        if (item.getItemId() == 1812001 ) {
                             hasItemPouch = true;
                             break;
                         }
@@ -149,3 +149,5 @@ public class PetLootHandler extends AbstractMaplePacketHandler {
         c.getSession().write(MaplePacketCreator.enableActions());
     }
 }
+
+
