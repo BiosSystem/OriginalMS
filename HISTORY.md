@@ -1,3 +1,9 @@
+## [2026-08-21] - Trade & Storage Security Patch
+
+- Hardened MapleTrade.java with synchronized methods to prevent concurrent item duping.
+- Synchronized ItemMoveHandler.java packet execution to prevent inventory races.
+- Validated StorageHandler.java negative meso overflow autoban.
+
 ## [2026-08-21] - Live Verification
 
 - OriginalMS CI/CD workflow confirmed green (Run ID: 32515341744)
@@ -125,5 +131,6 @@ Conducted a full read-only audit of the `main` branch against GMS v62 (Pirate cl
 - Dockerized deployment stack (docker-compose, multi-stage Dockerfile).
 - Added CPQ2, CWKPQ, Mu Lung Dojo, Maker Skill handler, Party Search handlers, Steal drop mechanic.
 - History scrub: stripped AI signatures and conventional commit prefixes from git history (2026 audit).
+
 
 

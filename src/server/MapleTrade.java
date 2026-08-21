@@ -94,7 +94,7 @@ public class MapleTrade {
         chr.getClient().getSession().write(MaplePacketCreator.getTradeCompletion(number));
     }
 
-    public void cancel() {
+    public synchronized void cancel() {
         // return the things
         StringBuilder logInfo = new StringBuilder("Canceled trade ");
         if (partner != null) {
@@ -130,7 +130,7 @@ public class MapleTrade {
         return meso;
     }
 
-    public void setMeso(int meso) {
+    public synchronized void setMeso(int meso) {
         if (locked) {
             throw new RuntimeException("Trade is locked.");
         }
@@ -150,7 +150,7 @@ public class MapleTrade {
         }
     }
 
-    public void addItem(IItem item) {
+    public synchronized void addItem(IItem item) {
         items.add(item);
         chr.getClient().getSession().write(MaplePacketCreator.getTradeItemAdd((byte) 0, item));
         if (partner != null) {
@@ -247,12 +247,26 @@ public class MapleTrade {
     }
 
     public static void cancelTrade(MapleCharacter c) {
-        c.getTrade().cancel();
-        if (c.getTrade().getPartner() != null) {
-            c.getTrade().getPartner().cancel();
-            c.getTrade().getPartner().getChr().setTrade(null);
+        MapleTrade local = c.getTrade();
+        if (local == null) return;
+        MapleTrade partner = local.getPartner();
+        if (partner == null) {
+            synchronized (local) {
+                local.cancel();
+                c.setTrade(null);
+            }
+        } else {
+            MapleTrade first = local.getChr().getId() < partner.getChr().getId() ? local : partner;
+            MapleTrade second = local.getChr().getId() < partner.getChr().getId() ? partner : local;
+            synchronized (first) {
+                synchronized (second) {
+                    local.cancel();
+                    partner.cancel();
+                    c.setTrade(null);
+                    partner.getChr().setTrade(null);
+                }
+            }
         }
-        c.setTrade(null);
     }
 
     public static void startTrade(MapleCharacter c) {

@@ -1,3 +1,9 @@
+## [2026-08-21] - Trade & Storage Security Patch
+
+- Hardened MapleTrade.java with synchronized methods to prevent concurrent item duping.
+- Synchronized ItemMoveHandler.java packet execution to prevent inventory races.
+- Validated StorageHandler.java negative meso overflow autoban.
+
 ## [2026-08-21] - Live Verification
 
 - OriginalMS CI/CD workflow confirmed green (Run ID: 32515341744)
@@ -161,5 +167,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Misc: Pets (auto-pot, loot, chat, food), Mounts, VIP teleport rocks, Maple TV, Silver Box.
 - World rankings computed every 30 minutes by `RankingWorker` (overall + per-job-class).
 - MySQL 5.7 schema with 76 tables; Tomcat JDBC connection pool.
+
 
 
