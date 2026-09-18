@@ -95,5 +95,5 @@ For deep technical details, source branching strategy, deployment configuration,
 
 ---
 <div align="center">
-  <i>Part of the <a href="https://bios-system.net">BiosSystem Suite</a></i>
+  <i>Part of the <a href="https://github.com/BiosSystem">BiosSystem Suite</a></i>
 </div>

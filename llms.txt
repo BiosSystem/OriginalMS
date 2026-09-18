@@ -1,0 +1,10 @@
+# BiosSystem AI Usage & Replication Policy
+# https://github.com/BiosSystem
+
+User-agent: *
+Disallow: /
+
+Notice: Automated ingestion, scraping, processing, model training, reverse engineering,
+decompilation, and AI-assisted replication or derivation of this software, its database schemas,
+API contracts, architecture, or documentation are strictly prohibited without express written
+authorization from BiosSystem.

@@ -1,0 +1,16 @@
+User-agent: *
+Allow: /
+
+# Block AI scrapers, indexers, and training engines
+User-agent: GPTBot
+User-agent: ChatGPT-User
+User-agent: ClaudeBot
+User-agent: anthropic-ai
+User-agent: PerplexityBot
+User-agent: CCBot
+User-agent: Google-Extended
+User-agent: Bytespider
+User-agent: FacebookBot
+User-agent: cohere-ai
+User-agent: Diffbot
+Disallow: /
