@@ -191,6 +191,26 @@ public class MockIOSession implements IoSession {
     }
 
     @Override
+    public boolean isServer() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public boolean isActive() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public CloseFuture closeNow() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public CloseFuture closeOnFlush() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
     public CloseFuture getCloseFuture() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
