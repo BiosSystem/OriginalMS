@@ -14,7 +14,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <mina.version>2.0.29</mina.version>
-        <mysql.version>5.1.37</mysql.version>
+        <mysql.version>8.4.0</mysql.version>
         <slf4j.version>1.7.12</slf4j.version>
         <tomcat-jdbc.version>8.0.28</tomcat-jdbc.version>
     </properties>
@@ -27,10 +27,14 @@
             <version>${mina.version}</version>
         </dependency>
 
-        <!-- MySQL Connector -->
+        <!-- MySQL Connector/J. The driver moved from mysql:mysql-connector-java
+             to com.mysql:mysql-connector-j at 8.0.31; the old coordinates stop
+             there and carry CVE-2023-22102. com.mysql.jdbc.Driver, which
+             configs/db.properties names, still resolves in 8.x as an alias of
+             com.mysql.cj.jdbc.Driver. -->
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
             <version>${mysql.version}</version>
         </dependency>
 
