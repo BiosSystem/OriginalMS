@@ -13,12 +13,12 @@ of BiosSystem proprietary systems is prohibited.
 -->
 
 <p align="center">
-  A modern, containerized approach to classic MapleStory (GMS 2008). Experience the nostalgic journey with enterprise-grade stability, automated deployment, and comprehensive bug fixes.
+  A modern, containerized approach to classic MapleStory (GMS 2008). Experience the nostalgic journey with enterprise-grade stability, automated deployment, and full bug fixes.
 </p>
 
 ## System Architecture
 
-OriginalMS employs a microservices-inspired design running seamlessly on Docker Compose. This modularizes the game server into specialized, scalable components.
+OriginalMS employs a microservices-inspired design running cleanly on Docker Compose. This modularizes the game server into specialized, scalable components.
 
 ```mermaid
 flowchart TB
@@ -39,7 +39,7 @@ flowchart TB
 
 ## Core Capabilities & Feature Matrix
 
-OriginalMS provides a meticulously patched, localized, and complete GMS 2008 server emulation out of the box.
+OriginalMS provides a carefully patched, localized, and complete GMS 2008 server emulation out of the box.
 
 ### ⚔️ Game Mechanics & Content
 | Feature | Status | Details |
