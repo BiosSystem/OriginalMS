@@ -15,7 +15,6 @@ bin/
 Thumbs.db
 
 # AI and Planning Files (Local Only)
-Claude_Brain/
 ORIGINALMS_GAP_ANALYSIS.md
 ORIGINALMS_V62_PLAN.md
 ORIGINALMS_SCRIPTING_PLAN.md
