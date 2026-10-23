@@ -11,6 +11,10 @@ on:
     branches: [main]
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
@@ -33,3 +37,10 @@ jobs:
       # means the tag build will compile too.
       - name: Compile (Maven)
         run: mvn -B clean package -DskipTests
+
+      - name: Step Summary
+        if: always()
+        run: |
+          echo "### Build Status" >> $GITHUB_STEP_SUMMARY
+          echo "- Maven Compile: ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
+          echo "- JDK: Temurin 8" >> $GITHUB_STEP_SUMMARY
