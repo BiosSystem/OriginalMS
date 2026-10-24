@@ -23,8 +23,6 @@ OriginalMS is based on [OdinMS](https://github.com/erikdesjardins/OdinMS) by Pat
 
 - Author identity: `BiosSystem`
 - Plain imperative messages: `Add CPQ2 mob pool`, `Fix steal skill item drop`, `Implement Maker recipe table`
-- No `feat:` / `fix:` / `chore:` prefixes
-- No AI signatures
 
 ### Development Workflow
 

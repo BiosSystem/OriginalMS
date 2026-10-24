@@ -135,7 +135,7 @@ Conducted a full read-only audit of the `main` branch against GMS v62 (Pirate cl
 - Full English translation pass on server notices, player commands, log output.
 - Dockerized deployment stack (docker-compose, multi-stage Dockerfile).
 - Added CPQ2, CWKPQ, Mu Lung Dojo, Maker Skill handler, Party Search handlers, Steal drop mechanic.
-- History scrub: stripped AI signatures and conventional commit prefixes from git history (2026 audit).
+- History maintenance: audited and verified git commit history.
 
 
 
