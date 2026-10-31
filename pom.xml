@@ -17,7 +17,21 @@
         <mysql.version>8.4.0</mysql.version>
         <slf4j.version>1.7.12</slf4j.version>
         <tomcat-jdbc.version>8.0.28</tomcat-jdbc.version>
+        <protobuf.version>3.25.9</protobuf.version>
     </properties>
+
+    <!-- Connector/J 8.4.0 (the last 8.x) pulls protobuf-java 3.25.1, which has
+         CVE-2024-7254. Pin the patched 3.25 line; same major, so the driver
+         is unaffected. -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.google.protobuf</groupId>
+                <artifactId>protobuf-java</artifactId>
+                <version>${protobuf.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <dependencies>
         <!-- Apache MINA Network Core -->
