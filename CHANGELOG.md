@@ -1,3 +1,7 @@
+## [2026-10-31] - protobuf-java security pin
+
+- Pinned protobuf-java to 3.25.9 through dependencyManagement. Connector/J 8.4.0 resolves 3.25.1, which has CVE-2024-7254 (stack overflow on deeply nested messages). (#24)
+
 ## [2026-08-21] - Pet Loot & Pirate Charge Patch
 
 - Removed restrictive pet loot inventory slot checks in PetLootHandler.java and added explicit 1812001 (Item Pouch) and 1812000 (Meso Magnet) global equip verification.
