@@ -10,7 +10,7 @@ BiosSystem - https://github.com/BiosSystem
 
 ### Attribution
 
-OriginalMS is based on [OdinMS](https://github.com/erikdesjardins/OdinMS) by Patrick Huy, Matthias Butz, and Jan Christian Meyer. See [CREDITS.md](CREDITS.md) for full upstream attribution.
+OriginalMS is based on [OdinMS](https://web.archive.org/web/20080919205541/http://www.odinms.de/) by Patrick Huy, Matthias Butz, and Jan Christian Meyer. See [CREDITS.md](CREDITS.md) for full upstream attribution.
 
 ### Branch Strategy
 

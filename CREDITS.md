@@ -9,7 +9,7 @@ BiosMS is derived from **OdinMS**, the original open-source MapleStory server em
 - **Jan Christian Meyer** (`vimes@odinms.de`)
 
 OdinMS is licensed under the [GNU Affero General Public License v3.0](https://www.gnu.org/licenses/agpl-3.0.html).  
-Original source: https://github.com/erikdesjardins/OdinMS
+The original site, odinms.de, is offline and the project never had an official repository; the archived project page is at https://web.archive.org/web/20080919205541/http://www.odinms.de/
 
 ## BiosMS Fork (Brazilian Portuguese origin)
 
