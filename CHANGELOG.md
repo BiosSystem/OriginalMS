@@ -1,3 +1,7 @@
+## [2026-11-03] - OdinMS link
+
+- CONTRIBUTING.md and CREDITS.md linked OdinMS to a GitHub repository that returns 404. They now link the archived odinms.de page. (#26)
+
 ## [2026-10-31] - protobuf-java security pin
 
 - Pinned protobuf-java to 3.25.9 through dependencyManagement. Connector/J 8.4.0 resolves 3.25.1, which has CVE-2024-7254 (stack overflow on deeply nested messages). (#24)
