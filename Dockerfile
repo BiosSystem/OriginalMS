@@ -11,7 +11,7 @@ COPY src ./src
 RUN mvn clean package -DskipTests
 
 # Stage 2: Create lightweight running image
-FROM eclipse-temurin:8-jre
+FROM eclipse-temurin:24-jre
 WORKDIR /app
 
 # Install gettext for envsubst if needed (useful for dynamic properties configuration)
