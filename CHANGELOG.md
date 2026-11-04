@@ -1,3 +1,7 @@
+## [Unreleased] - 2026-11-04
+
+- Dependabot: weekly version updates (docker, github-actions, maven); minor and patch grouped, new releases held 7 days. (#28)
+
 ## [2026-11-03] - OdinMS link
 
 - CONTRIBUTING.md and CREDITS.md linked OdinMS to a GitHub repository that returns 404. They now link the archived odinms.de page. (#26)
