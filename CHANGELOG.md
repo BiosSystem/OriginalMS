@@ -1,5 +1,6 @@
 ## [Unreleased] - 2026-11-04
 
+- Dependabot: major-version updates are no longer proposed; majors are upgraded by hand. (#38)
 - Dependabot: weekly version updates (docker, github-actions, maven); minor and patch grouped, new releases held 7 days. (#28)
 
 ## [2026-11-03] - OdinMS link

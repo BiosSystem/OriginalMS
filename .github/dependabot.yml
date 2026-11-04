@@ -1,8 +1,10 @@
-# Dependabot: weekly version updates, minor and patch grouped into one pull
-# request per ecosystem, majors on their own. Every update is a pull request
-# that runs CI and gets a review before it is merged. The cooldown holds a new
-# release back for 7 days so a bad or compromised publish can be pulled first;
-# security updates are not delayed by it.
+# Dependabot: weekly version updates, minor and patch only, grouped into one
+# pull request per ecosystem. Major versions are ignored here and upgraded by
+# hand, one repository at a time; a vulnerability that needs a major still
+# shows up as a Dependabot alert. Every update is a pull request that runs CI
+# and gets a review before it is merged. The cooldown holds a new release back
+# for 7 days so a bad or compromised publish can be pulled first; security
+# updates are not delayed by it.
 version: 2
 updates:
   - package-ecosystem: maven
@@ -13,6 +15,9 @@ updates:
     cooldown:
       default-days: 7
     open-pull-requests-limit: 5
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
     groups:
       maven:
         patterns: ["*"]
@@ -26,6 +31,9 @@ updates:
     cooldown:
       default-days: 7
     open-pull-requests-limit: 5
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
     groups:
       docker:
         patterns: ["*"]
@@ -39,6 +47,9 @@ updates:
     cooldown:
       default-days: 7
     open-pull-requests-limit: 5
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
     groups:
       actions:
         patterns: ["*"]
