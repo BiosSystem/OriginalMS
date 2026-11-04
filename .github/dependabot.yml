@@ -1,0 +1,45 @@
+# Dependabot: weekly version updates, minor and patch grouped into one pull
+# request per ecosystem, majors on their own. Every update is a pull request
+# that runs CI and gets a review before it is merged. The cooldown holds a new
+# release back for 7 days so a bad or compromised publish can be pulled first;
+# security updates are not delayed by it.
+version: 2
+updates:
+  - package-ecosystem: maven
+    directory: /
+    schedule:
+      interval: weekly
+      day: sunday
+    cooldown:
+      default-days: 7
+    open-pull-requests-limit: 5
+    groups:
+      maven:
+        patterns: ["*"]
+        update-types: [minor, patch]
+
+  - package-ecosystem: docker
+    directory: /
+    schedule:
+      interval: weekly
+      day: sunday
+    cooldown:
+      default-days: 7
+    open-pull-requests-limit: 5
+    groups:
+      docker:
+        patterns: ["*"]
+        update-types: [minor, patch]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: sunday
+    cooldown:
+      default-days: 7
+    open-pull-requests-limit: 5
+    groups:
+      actions:
+        patterns: ["*"]
+        update-types: [minor, patch]
