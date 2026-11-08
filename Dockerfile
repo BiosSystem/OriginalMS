@@ -1,5 +1,5 @@
 # Stage 1: Build Java source using Maven
-FROM maven:3.8-eclipse-temurin-8 AS build
+FROM maven:3.9-eclipse-temurin-26 AS build
 WORKDIR /app
 
 # Copy pom.xml and resolve dependencies
